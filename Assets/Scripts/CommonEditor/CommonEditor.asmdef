@@ -1,0 +1,14 @@
+{
+    "name": "CommonEditor",
+    "references": [
+        "GUID:a63967cd6cb2fa2448e06df14a1ee5c3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

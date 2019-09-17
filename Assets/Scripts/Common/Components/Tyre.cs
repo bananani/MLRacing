@@ -12,9 +12,23 @@ namespace Common.Components
         private static readonly Vector3 _forwards = new Vector2(0, 1);
         private CarData _carData;
 
+        private Rigidbody2D _rigidbodyReference;
+        private Rigidbody2D _rigidbody
+        {
+            get
+            {
+                if(_rigidbodyReference == null)
+                {
+                    _rigidbodyReference = GetComponent<Rigidbody2D>();
+                }
+
+                return _rigidbodyReference;
+            }
+        }
+
         private Vector3 _originalPosition;
-        private Rigidbody2D _rigidbody;
         private TrailRenderer _trailRenderer;
+        private ParticleSystem _smokeSystem;
 
         private float _currentBrakingForce;
         private float _rawInputForce;
@@ -26,7 +40,7 @@ namespace Common.Components
 
         private Vector2 _relativeVelocity => GetRotatedVelocityVector(_rigidbody.velocity, -transform.eulerAngles.z);
 
-        private float _currentTorque => (_rawInputForce * _currentSlipMultiplier * (1f - _currentBrakingForce)) / _carData.TyreRadius;
+        private float _currentTorque => (_rawInputForce * Mathf.Min(1f, _currentSlipMultiplier * 2.5f) * (1f - _currentBrakingForce)) / _carData.TyreRadius;
         private float _gripWithSlip => _grip * _currentSlipMultiplier;
         private Vector2 _sidewaysFrictionForce => new Vector2(-_relativeVelocity.x, 0) * _gripWithSlip;
         private Vector2 _rollingFrictionForce => new Vector2(0, -_relativeVelocity.y * CTyre.ROLLING_RESISTANCE);
@@ -35,8 +49,8 @@ namespace Common.Components
         private void Start()
         {
             _originalPosition = transform.localPosition;
-            _rigidbody = GetComponent<Rigidbody2D>();
             _trailRenderer = GetComponent<TrailRenderer>();
+            _smokeSystem = GetComponent<ParticleSystem>();
         }
 
         public void Init(CarData carData, TyreIdentifier tyreType)
@@ -55,6 +69,11 @@ namespace Common.Components
             CalculateSlip();
             AddSidewaysGrip();
             AddRollingFriction();
+        }
+
+        public void SetTyreMass(float mass)
+        {
+            _rigidbody.mass = mass;
         }
 
         public void AddForce(float force)
@@ -100,6 +119,8 @@ namespace Common.Components
             }
 
             _trailRenderer.emitting = _currentSlipMultiplier < CTyre.TYRE_TRAIL_SLIP_THRESHOLD;
+            ParticleSystem.EmissionModule emission = _smokeSystem.emission;
+            emission.enabled = _currentSlipMultiplier < CTyre.TYRE_TRAIL_SLIP_THRESHOLD;
         }
 
         private float GetToeAngle()
@@ -181,7 +202,7 @@ namespace Common.Components
         private const float GIZMO_SCALE = 0.001f;
         private void OnDrawGizmos()
         {
-            if(_rigidbody == null)
+            if(_rigidbody == null || _carData == null)
             {
                 return;
             }

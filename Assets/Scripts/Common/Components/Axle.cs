@@ -27,6 +27,12 @@ namespace Common.Components
             _rightTyre.Init(carData, _reverseSteering ? TyreIdentifier.RR : TyreIdentifier.FR);
         }
 
+        public void SetTyreMass(float mass)
+        {
+            _leftTyre.SetTyreMass(mass);
+            _rightTyre.SetTyreMass(mass);
+        }
+
         public void Accelerate(float torque)
         {
             _leftTyre.AddForce(torque);

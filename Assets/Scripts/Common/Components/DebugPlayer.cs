@@ -26,7 +26,7 @@ namespace Common.Components
             {
                 if(Input.GetKey(KeyCode.S))
                 {
-                    _car.Accelerate(-1);
+                    _car.Accelerate(-0.4f);
                     _car.Brake(0);
                 }
                 else

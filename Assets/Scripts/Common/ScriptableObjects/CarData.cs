@@ -14,6 +14,14 @@ namespace Common.ScriptableObjects
         [EnumFlag]
         public SteeringTypeIdentifier SteeringType;
 
+        [Header("Weight")]
+        [Min(0)]
+        public float VehicleMass;
+        [Min(0)]
+        public float FrontTyreMass;
+        [Min(0)]
+        public float RearTyreMass;
+
         [Header("Engine")]
         [Min(0)]
         public float MaxAcceleration;

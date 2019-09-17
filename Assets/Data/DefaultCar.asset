@@ -15,11 +15,14 @@ MonoBehaviour:
   CarName: Default
   DrivetrainType: 2
   SteeringType: 1
-  MaxAcceleration: 600000
+  VehicleMass: 900
+  FrontTyreMass: 55
+  RearTyreMass: 50
+  MaxAcceleration: 2000
   TyreRadius: 100
-  MaxSteeringAngle: 20
+  MaxSteeringAngle: 30
   Grip: 900
-  MinGripDuringSlip: 0.4
+  MinGripDuringSlip: 0.25
   MinGripLossAngle: 20
   ToeFront: 4
   ToeRear: 0

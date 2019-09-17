@@ -21,9 +21,9 @@ namespace Common.Components
         public void Accelerate(float torque)
         {
             float fwdTorque = (_drivetrainType & DrivetrainIdentifier.FWD) == DrivetrainIdentifier.FWD ? torque : 0f;
-            _frontAxle.Accelerate(fwdTorque);
-
             float rwdTorque = (_drivetrainType & DrivetrainIdentifier.RWD) == DrivetrainIdentifier.RWD ? torque : 0f;
+
+            _frontAxle.Accelerate(fwdTorque);
             _rearAxle.Accelerate(rwdTorque);
         }
     }

@@ -33,7 +33,7 @@ namespace Common.Components
                 {
                     _car.Accelerate(1);
                     _car.Brake(0);
-                } 
+                }
             }
             else if(Input.GetKey(KeyCode.S))
             {
@@ -51,6 +51,7 @@ namespace Common.Components
             {
                 turn += 1;
             }
+
             if(Input.GetKey(KeyCode.D))
             {
                 turn -= 1;

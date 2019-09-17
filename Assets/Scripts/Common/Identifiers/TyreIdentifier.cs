@@ -1,4 +1,10 @@
 namespace Common.Identifiers
 {
-    public enum TyreIdentifier { FL, FR, RL, RR }
+    public enum TyreIdentifier
+    {
+        FL,
+        FR,
+        RL,
+        RR
+    }
 }

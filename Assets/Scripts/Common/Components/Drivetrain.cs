@@ -24,7 +24,7 @@ namespace Common.Components
             _frontAxle.Accelerate(fwdTorque);
 
             float rwdTorque = (_drivetrainType & DrivetrainIdentifier.RWD) == DrivetrainIdentifier.RWD ? torque : 0f;
-            _rearAxle.Accelerate(rwdTorque);  
+            _rearAxle.Accelerate(rwdTorque);
         }
     }
 }

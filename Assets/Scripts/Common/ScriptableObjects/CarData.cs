@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Common.ScriptableObjects
 {
-    [CreateAssetMenu(menuName="ScriptableObjects/CarData")]
+    [CreateAssetMenu(menuName = "ScriptableObjects/CarData")]
     public class CarData : ScriptableObject
     {
         [Header("General info")]

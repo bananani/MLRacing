@@ -26,7 +26,7 @@ namespace Common.Components
 
         private Vector2 _relativeVelocity => GetRotatedVelocityVector(_rigidbody.velocity, -transform.eulerAngles.z);
 
-        private float _currentTorque =>  (_rawInputForce * _currentSlipMultiplier * (1f - _currentBrakingForce)) / _carData.TyreRadius;
+        private float _currentTorque => (_rawInputForce * _currentSlipMultiplier * (1f - _currentBrakingForce)) / _carData.TyreRadius;
         private float _gripWithSlip => _grip * _currentSlipMultiplier;
         private Vector2 _sidewaysFrictionForce => new Vector2(-_relativeVelocity.x, 0) * _gripWithSlip;
         private Vector2 _rollingFrictionForce => new Vector2(0, -_relativeVelocity.y * CTyre.ROLLING_RESISTANCE);
@@ -98,7 +98,7 @@ namespace Common.Components
             {
                 _currentSlipMultiplier = _carData.MinGripDuringSlip;
             }
-            
+
             _trailRenderer.emitting = _currentSlipMultiplier < CTyre.TYRE_TRAIL_SLIP_THRESHOLD;
         }
 
@@ -172,7 +172,7 @@ namespace Common.Components
             // Calculate the grip amount within the variation and re-add the minimum we reduced in the last step
             // ( ( 0.714 * 0.7 ) + 0.3 = 0.8 )
             float slipMultiplier = (invertedDriftAnglePercent * slipAmountVariation) + _carData.MinGripDuringSlip;
-            
+
             // Return the grip multiplier ( 80% )
             return slipMultiplier;
         }
@@ -194,7 +194,7 @@ namespace Common.Components
             Vector2 correctedTorque = GetRotatedVelocityVector(torqueForce, transform.rotation.eulerAngles.z) * GIZMO_SCALE;
             Vector2 correctedSidewaysFrictionForce = GetRotatedVelocityVector(_sidewaysFrictionForce, transform.rotation.eulerAngles.z) * GIZMO_SCALE;
             Vector2 correctedBrakingFrictionForce = GetRotatedVelocityVector(_brakingFrictionForce, transform.rotation.eulerAngles.z) * GIZMO_SCALE;
-            
+
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(locationIn2DSpace, locationIn2DSpace + correctedRollingFrictionForce);
 

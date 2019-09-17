@@ -1,5 +1,5 @@
 namespace Common.Constants
-{      
+{
     public class CTyre
     {
         public const float ROLLING_RESISTANCE = 0.05f;

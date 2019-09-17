@@ -1,4 +1,8 @@
 namespace Common.Identifiers
 {
-    public enum DrivetrainIdentifier { FWD = 1, RWD = 2 }
+    public enum DrivetrainIdentifier
+    {
+        FWD = 1,
+        RWD = 2
+    }
 }

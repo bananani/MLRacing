@@ -2,48 +2,42 @@ using UnityEngine;
 
 namespace Common.Components
 {
-    public class DebugPlayer : MonoBehaviour
+
+    public class DebugPlayer : Driver
     {
-        private Car _car;
-
-        private void Start()
-        {
-            _car = GetComponent<Car>();
-        }
-
-        private void FixedUpdate()
+        protected override void UpdateDriver()
         {
             if(Input.GetKey(KeyCode.Space))
             {
-                _car.Handbrake(1);
+                Handbrake(1);
             }
             else
             {
-                _car.Handbrake(0);
+                Handbrake(0);
             }
 
             if(Input.GetKey(KeyCode.W))
             {
                 if(Input.GetKey(KeyCode.S))
                 {
-                    _car.Accelerate(-0.4f);
-                    _car.Brake(0);
+                    Accelerate(-0.4f);
+                    Brake(0);
                 }
                 else
                 {
-                    _car.Accelerate(1);
-                    _car.Brake(0);
+                    Accelerate(1);
+                    Brake(0);
                 }
             }
             else if(Input.GetKey(KeyCode.S))
             {
-                _car.Accelerate(0);
-                _car.Brake(1);
+                Accelerate(0);
+                Brake(1);
             }
             else
             {
-                _car.Accelerate(0);
-                _car.Brake(0);
+                Accelerate(0);
+                Brake(0);
             }
 
             float turn = 0;
@@ -57,7 +51,7 @@ namespace Common.Components
                 turn -= 1;
             }
 
-            _car.Turn(turn);
+            Turn(turn);
         }
     }
 }

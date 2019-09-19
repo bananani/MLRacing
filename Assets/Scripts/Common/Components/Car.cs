@@ -22,13 +22,18 @@ namespace Common.Components
         private Engine _engine = null;
         [SerializeField]
         private Drivetrain _drivetrain = null;
+        [SerializeField]
+        private Body _body = null;
 
         private Rigidbody2D _rigidbody;
         private Vector2 _currentPosition => new Vector2(transform.position.x, transform.position.y);
 
-        private float _previousBodyMass;
-        private float _previousFrontTyreMass;
-        private float _previousRearTyreMass;
+        private float _currentBodyMass;
+        private float _currentFrontTyreMass;
+        private float _currentRearTyreMass;
+        private Color _currentBaseColor;
+        private Color _currentCustomizationColor1;
+        private Color _currentCustomizationColor2;
 
         public float CurrentVelocityInMetersPerSecond => _rigidbody.velocity.magnitude;
         public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
@@ -50,11 +55,11 @@ namespace Common.Components
 
         private void FixedUpdate()
         {
-            Debug.Log($"Current Speed: {CurrentVelocityInKilometersPerHour} KM/H");
-
             float acceleration = (CurrentVelocityInMetersPerSecond - _previousFrameVelocity) / Time.fixedDeltaTime;
-            Debug.Log($"Current acceleration {acceleration} ms^2");
             _previousFrameVelocity = CurrentVelocityInMetersPerSecond;
+
+            //Debug.Log($"Current Speed: {CurrentVelocityInKilometersPerHour} KM/H");
+            //Debug.Log($"Current acceleration {acceleration} ms^2");
         }
 
         private void Init(CarData carData)
@@ -65,6 +70,7 @@ namespace Common.Components
             _frontAxle.Init(carData, SteeringTypeIdentifier.FRONT);
             _rearAxle.Init(carData, SteeringTypeIdentifier.REAR);
             _drivetrain.Init(_frontAxle, _rearAxle, carData);
+            _body.Init(_carData);
 
             UpdateCarMassData();
             CarDataChanged += OnCarDataChanged;
@@ -76,9 +82,18 @@ namespace Common.Components
             _frontAxle.SetTyreMass(_carData.FrontTyreMass);
             _rearAxle.SetTyreMass(_carData.RearTyreMass);
 
-            _previousBodyMass = _carData.VehicleMass;
-            _previousFrontTyreMass = _carData.FrontTyreMass;
-            _previousRearTyreMass = _carData.RearTyreMass;
+            _currentBodyMass = _carData.VehicleMass;
+            _currentFrontTyreMass = _carData.FrontTyreMass;
+            _currentRearTyreMass = _carData.RearTyreMass;
+        }
+
+        private void UpdateCarCustomizationData()
+        {
+            _body.SetCustomization();
+
+            _currentBaseColor = _carData.BaseColor;
+            _currentCustomizationColor1 = _carData.Customization1;
+            _currentCustomizationColor2 = _carData.Customization2;
         }
 
         public void Accelerate(float strength)
@@ -104,7 +119,12 @@ namespace Common.Components
 
         private void CheckExternalCarDataChanges()
         {
-            if(_previousBodyMass != _carData.VehicleMass || _previousFrontTyreMass != _carData.FrontTyreMass || _previousRearTyreMass != _carData.RearTyreMass)
+            if(_currentBodyMass != _carData.VehicleMass ||
+            _currentFrontTyreMass != _carData.FrontTyreMass ||
+            _currentRearTyreMass != _carData.RearTyreMass ||
+            _currentBaseColor != _carData.BaseColor ||
+            _currentCustomizationColor1 != _carData.Customization1 ||
+            _currentCustomizationColor2 != _carData.Customization2)
             {
                 CarDataChanged?.Invoke();
             }
@@ -113,6 +133,7 @@ namespace Common.Components
         private void OnCarDataChanged()
         {
             UpdateCarMassData();
+            UpdateCarCustomizationData();
         }
 
         private void OnDrawGizmos()

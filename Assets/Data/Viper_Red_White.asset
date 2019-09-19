@@ -10,15 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d44b4a37e1af4b49a8665888a0be809, type: 3}
-  m_Name: DefaultCar
+  m_Name: Viper_Red_White
   m_EditorClassIdentifier: 
   CarName: Default
   DrivetrainType: 2
   SteeringType: 1
+  CarModel: 1
+  BaseColor: {r: 1, g: 0, b: 0, a: 1}
+  Customization1: {r: 1, g: 1, b: 1, a: 1}
+  Customization2: {r: 1, g: 1, b: 1, a: 1}
   VehicleMass: 900
   FrontTyreMass: 55
   RearTyreMass: 50
   MaxAcceleration: 2000
+  FrontAxleDistance: 1.6
+  FrontAxleLength: 2.1
+  RearAxleDistance: 1.6
+  RearAxleLenght: 2.1
   TyreRadius: 100
   MaxSteeringAngle: 30
   Grip: 900

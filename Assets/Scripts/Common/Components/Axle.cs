@@ -17,14 +17,15 @@ namespace Common.Components
 
         private float _maxTurnRadius => _carData.MaxSteeringAngle;
         private bool _useForSteering => (_carData.SteeringType & _steeringType) == _steeringType;
-        private bool _reverseSteering => (_steeringType & SteeringTypeIdentifier.REAR) == SteeringTypeIdentifier.REAR;
+        private bool _isRearAxle => (_steeringType & SteeringTypeIdentifier.REAR) == SteeringTypeIdentifier.REAR;
 
         public void Init(CarData carData, SteeringTypeIdentifier steeringType)
         {
             _carData = carData;
             _steeringType = steeringType;
-            _leftTyre.Init(carData, _reverseSteering ? TyreIdentifier.RL : TyreIdentifier.FL);
-            _rightTyre.Init(carData, _reverseSteering ? TyreIdentifier.RR : TyreIdentifier.FR);
+            _leftTyre.Init(carData, _isRearAxle ? TyreIdentifier.RL : TyreIdentifier.FL);
+            _rightTyre.Init(carData, _isRearAxle ? TyreIdentifier.RR : TyreIdentifier.FR);
+        }
         }
 
         public void SetTyreMass(float mass)
@@ -54,7 +55,7 @@ namespace Common.Components
                 return;
             }
 
-            float turnDegrees = _reverseSteering ? -(_maxTurnRadius * turningStrength) : (_maxTurnRadius * turningStrength);
+            float turnDegrees = _isRearAxle ? -(_maxTurnRadius * turningStrength) : (_maxTurnRadius * turningStrength);
 
             _leftTyre.Turn(turnDegrees);
             _rightTyre.Turn(turnDegrees);

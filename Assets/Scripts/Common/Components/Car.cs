@@ -11,9 +11,12 @@ namespace Common.Components
 
         private delegate void CarDataChangedEvent();
         private event CarDataChangedEvent CarDataChanged;
+        private event CarDataChangedEvent CarDataCustomizationChanged;
 
         [SerializeField]
         private CarData _carData = null;
+        [SerializeField]
+        private CarCustomizationData _customizationData = null;
         [SerializeField]
         private Axle _frontAxle = null;
         [SerializeField]
@@ -51,6 +54,7 @@ namespace Common.Components
         private void Update()
         {
             CheckExternalCarDataChanges();
+            CheckCustomizationDataChanges();
         }
 
         private void FixedUpdate()
@@ -70,10 +74,11 @@ namespace Common.Components
             _frontAxle.Init(carData, SteeringTypeIdentifier.FRONT);
             _rearAxle.Init(carData, SteeringTypeIdentifier.REAR);
             _drivetrain.Init(_frontAxle, _rearAxle, carData);
-            _body.Init(_carData);
+            _body.Init(_customizationData);
 
             UpdateCarMassData();
             CarDataChanged += OnCarDataChanged;
+            CarDataCustomizationChanged += OnCarCustomizationDataChanged;
         }
 
         private void UpdateCarMassData()
@@ -91,9 +96,9 @@ namespace Common.Components
         {
             _body.SetCustomization();
 
-            _currentBaseColor = _carData.BaseColor;
-            _currentCustomizationColor1 = _carData.Customization1;
-            _currentCustomizationColor2 = _carData.Customization2;
+            _currentBaseColor = _customizationData.BaseColor;
+            _currentCustomizationColor1 = _customizationData.Customization1;
+            _currentCustomizationColor2 = _customizationData.Customization2;
         }
 
         public void Accelerate(float strength)
@@ -121,18 +126,29 @@ namespace Common.Components
         {
             if(_currentBodyMass != _carData.VehicleMass ||
             _currentFrontTyreMass != _carData.FrontTyreMass ||
-            _currentRearTyreMass != _carData.RearTyreMass ||
-            _currentBaseColor != _carData.BaseColor ||
-            _currentCustomizationColor1 != _carData.Customization1 ||
-            _currentCustomizationColor2 != _carData.Customization2)
+            _currentRearTyreMass != _carData.RearTyreMass)
             {
                 CarDataChanged?.Invoke();
+            }
+        }
+
+        private void CheckCustomizationDataChanges()
+        {
+            if(_currentBaseColor != _customizationData.BaseColor ||
+            _currentCustomizationColor1 != _customizationData.Customization1 ||
+            _currentCustomizationColor2 != _customizationData.Customization2)
+            {
+                CarDataCustomizationChanged?.Invoke();
             }
         }
 
         private void OnCarDataChanged()
         {
             UpdateCarMassData();
+        }
+
+        private void OnCarCustomizationDataChanged()
+        {
             UpdateCarCustomizationData();
         }
 

@@ -26,7 +26,6 @@ namespace Common.Components
             _leftTyre.Init(carData, _isRearAxle ? TyreIdentifier.RL : TyreIdentifier.FL);
             _rightTyre.Init(carData, _isRearAxle ? TyreIdentifier.RR : TyreIdentifier.FR);
         }
-        }
 
         public void SetTyreMass(float mass)
         {

@@ -1,3 +1,4 @@
+using Common.ScriptableObjects;
 using UnityEngine;
 
 namespace Common.Components
@@ -5,7 +6,7 @@ namespace Common.Components
     [RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
     public class Body : MonoBehaviour
     {
-        private CarData _carData;
+        private CarCustomizationData _customizationData;
 
         private BoxCollider2D _collider;
         private SpriteRenderer _renderer;
@@ -18,17 +19,17 @@ namespace Common.Components
             _carMaterial = _renderer.material;
         }
 
-        public void Init(CarData carData)
+        public void Init(CarCustomizationData customizationData)
         {
-            _carData = carData;
+            _customizationData = customizationData;
             SetCustomization();
         }
 
         public void SetCustomization()
         {
-            _carMaterial.SetColor("_CustomizationColorR", _carData.BaseColor);
-            _carMaterial.SetColor("_CustomizationColorG", _carData.Customization1);
-            _carMaterial.SetColor("_CustomizationColorB", _carData.Customization2);
+            _carMaterial.SetColor("_CustomizationColorR", _customizationData.BaseColor);
+            _carMaterial.SetColor("_CustomizationColorG", _customizationData.Customization1);
+            _carMaterial.SetColor("_CustomizationColorB", _customizationData.Customization2);
         }
 
         void OnCollisionEnter2D(Collision2D collider)

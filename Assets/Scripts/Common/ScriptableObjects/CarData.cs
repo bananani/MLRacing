@@ -14,11 +14,6 @@ namespace Common.ScriptableObjects
         [EnumFlag]
         public SteeringTypeIdentifier SteeringType;
 
-        [Header("Customization")]
-        public Color BaseColor = Color.white;
-        public Color Customization1 = Color.white;
-        public Color Customization2 = Color.white;
-
         [Header("Weight")]
         [Min(0)]
         public float VehicleMass;

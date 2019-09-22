@@ -24,5 +24,5 @@ MonoBehaviour:
   Grip: 900
   MinGripDuringSlip: 0.25
   MinGripLossAngle: 20
-  ToeFront: 0
+  ToeFront: 4
   ToeRear: 0

@@ -24,6 +24,8 @@ namespace Common.ScriptableObjects
 
         [Header("Engine")]
         [Min(0)]
+        public float MaxSpeed;
+        [Min(0)]
         public float MaxAcceleration;
 
         [Header("Tyres")]

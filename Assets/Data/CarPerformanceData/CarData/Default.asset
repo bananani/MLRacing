@@ -15,8 +15,8 @@ MonoBehaviour:
   CarName: Default
   DrivetrainType: 2
   SteeringType: 1
-  VehicleMass: 450
-  MaxAcceleration: 2000
+  VehicleMass: 800
+  MaxAcceleration: 4000
   MaxSteeringAngle: 25
   ToeFront: 3
   ToeRear: 0

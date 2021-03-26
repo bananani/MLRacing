@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mass: 15
   Radius: 300
-  CompoundFriction: 2.5
-  SidewaysFrictionCoefficient: 1.3
+  CompoundBaseFriction: 3
+  SidewaysFrictionCoefficient: 1
   ForwardsFrictionCoefficient: 1.8
   _stationaryFrictionCoefficient: 1
   _stationaryFrictionMaxVelocity: 15
   _peakFrictionCoefficient: 1.2
   _peakFrictionVelocity: 20
-  _limitFrictionCoefficient: 0.4
-  _limitFrictionMinVelocity: 50
+  _limitFrictionCoefficient: 0.6
+  _limitFrictionMinVelocity: 40
   _frictionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 5
+      time: 15
       value: 1
       inSlope: 0
       outSlope: 0
@@ -36,8 +36,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 8
-      value: 1.1
+      time: 20
+      value: 1.2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
       inWeight: 0.6
       outWeight: 0.2
     - serializedVersion: 3
-      time: 35
-      value: 0.4
+      time: 40
+      value: 0.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0

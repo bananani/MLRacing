@@ -1,6 +1,6 @@
 namespace Common.Identifiers
 {
-    public enum TyreIdentifier
+    public enum TyrePositionIdentifier
     {
         FL,
         FR,

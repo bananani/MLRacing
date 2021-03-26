@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace Common.Components.Drivers
 {
-
     public class DebugPlayer : Driver
     {
-        protected override void UpdateDriver()
+        protected override void UpdateDriver() { }
+
+        protected override void FixedUpdateDriver()
         {
             if(Input.GetKey(KeyCode.Space))
             {
@@ -18,16 +19,8 @@ namespace Common.Components.Drivers
 
             if(Input.GetKey(KeyCode.W))
             {
-                if(Input.GetKey(KeyCode.S))
-                {
-                    Accelerate(-0.4f);
-                    Brake(0);
-                }
-                else
-                {
-                    Accelerate(1);
-                    Brake(0);
-                }
+                Accelerate(1);
+                Brake(0);
             }
             else if(Input.GetKey(KeyCode.S))
             {
@@ -40,15 +33,15 @@ namespace Common.Components.Drivers
                 Brake(0);
             }
 
-            float turn = 0;
+            float turn = 0f;
             if(Input.GetKey(KeyCode.A))
             {
-                turn += 1;
+                turn += 1f;
             }
 
             if(Input.GetKey(KeyCode.D))
             {
-                turn -= 1;
+                turn -= 1f;
             }
 
             Turn(turn);

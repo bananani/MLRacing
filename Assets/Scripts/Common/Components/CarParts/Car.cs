@@ -32,11 +32,11 @@ namespace Common.Components.CarParts
         private Vector2 _currentPosition => new Vector2(transform.position.x, transform.position.y);
 
         private float _currentBodyMass;
-        private float _currentFrontTyreMass;
-        private float _currentRearTyreMass;
         private Color _currentBaseColor;
         private Color _currentCustomizationColor1;
         private Color _currentCustomizationColor2;
+
+        public float CurrentForceMomentum => _carData.CarTotalMass * (CurrentVelocityInMetersPerSecond / Time.fixedDeltaTime);
 
         public float CurrentVelocityInMetersPerSecond => _rigidbody.velocity.magnitude;
         public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
@@ -46,7 +46,9 @@ namespace Common.Components.CarParts
 
         public Vector3 CurrentPosition => _body.transform.position;
         public float CurrentVelocityDirection => Vector2.SignedAngle(Vector2.up, _rigidbody.velocity.normalized);
+        public float CurrentVehicleRotation => transform.rotation.eulerAngles.z;
 
+        private float _acceleration = 0f;
         private float _previousFrameVelocity = 0f;
 
         private void Awake()
@@ -62,15 +64,15 @@ namespace Common.Components.CarParts
 
         private void FixedUpdate()
         {
-            float acceleration = (CurrentVelocityInMetersPerSecond - _previousFrameVelocity) / Time.fixedDeltaTime;
+            _acceleration = (CurrentVelocityInMetersPerSecond - _previousFrameVelocity) / Time.fixedDeltaTime;
             _previousFrameVelocity = CurrentVelocityInMetersPerSecond;
-
-            //Debug.Log($"Current Speed: {CurrentVelocityInKilometersPerHour} KM/H");
-            //Debug.Log($"Current acceleration {acceleration} ms^2");
         }
 
         private void Init(CarData carData)
         {
+            carData.FrontTyres.InitFrictionCurve();
+            carData.RearTyres.InitFrictionCurve();
+
             _rigidbody = GetComponent<Rigidbody2D>();
 
             _engine.Init(_drivetrain, carData);
@@ -87,12 +89,7 @@ namespace Common.Components.CarParts
         private void UpdateCarMassData()
         {
             _rigidbody.mass = _carData.VehicleMass;
-            _frontAxle.SetTyreMass(_carData.FrontTyreMass);
-            _rearAxle.SetTyreMass(_carData.RearTyreMass);
-
             _currentBodyMass = _carData.VehicleMass;
-            _currentFrontTyreMass = _carData.FrontTyreMass;
-            _currentRearTyreMass = _carData.RearTyreMass;
         }
 
         private void UpdateCarCustomizationData()
@@ -104,20 +101,9 @@ namespace Common.Components.CarParts
             _currentCustomizationColor2 = _customizationData.Customization2;
         }
 
-        public void Accelerate(float strength)
-        {
-            _engine.Accelerate(strength);
-        }
-
-        public void Brake(float strength)
-        {
-            _frontAxle.Brake(strength);
-        }
-
-        public void Handbrake(float strength)
-        {
-            _rearAxle.Brake(strength);
-        }
+        public void Accelerate(float strength) => _engine.Accelerate(strength);
+        public void Brake(float strength) => _frontAxle.Brake(strength);
+        public void Handbrake(float strength) => _rearAxle.Brake(strength);
 
         public void Turn(float strength)
         {
@@ -127,9 +113,7 @@ namespace Common.Components.CarParts
 
         private void CheckExternalCarDataChanges()
         {
-            if(_currentBodyMass != _carData.VehicleMass ||
-            _currentFrontTyreMass != _carData.FrontTyreMass ||
-            _currentRearTyreMass != _carData.RearTyreMass)
+            if(_currentBodyMass != _carData.VehicleMass)
             {
                 CarDataChanged?.Invoke();
             }
@@ -145,15 +129,8 @@ namespace Common.Components.CarParts
             }
         }
 
-        private void OnCarDataChanged()
-        {
-            UpdateCarMassData();
-        }
-
-        private void OnCarCustomizationDataChanged()
-        {
-            UpdateCarCustomizationData();
-        }
+        private void OnCarDataChanged() => UpdateCarMassData();
+        private void OnCarCustomizationDataChanged() => UpdateCarCustomizationData();
 
         private void OnDrawGizmos()
         {
@@ -163,6 +140,8 @@ namespace Common.Components.CarParts
             }
 
             Gizmos.DrawLine(_currentPosition, _currentPosition + _rigidbody.velocity);
+            //Debug.Log($"Current Speed: {CurrentVelocityInKilometersPerHour} KM/H");
+            //Debug.Log($"Current acceleration {acceleration} ms^2");
         }
     }
 }

@@ -17,31 +17,28 @@ namespace Common.ScriptableObjects
         [Header("Weight")]
         [Min(0)]
         public float VehicleMass;
-        [Min(0)]
-        public float FrontTyreMass;
-        [Min(0)]
-        public float RearTyreMass;
 
         [Header("Engine")]
         [Min(0)]
-        public float MaxSpeed;
-        [Min(0)]
         public float MaxAcceleration;
 
-        [Header("Tyres")]
-        [Min(float.Epsilon), Tooltip("Tyre radius in mm")]
-        public float TyreRadius;
+        [Header("Steering")]
         [Range(0f, 90f)]
         public float MaxSteeringAngle;
-        [Min(0)]
-        public float Grip;
-        [Range(0f, 1f), Tooltip("Grip at locked brakes or at 90 degree drift (Higher = More grip when sliding)")]
-        public float MinGripDuringSlip;
-        [Range(0f, 90f), Tooltip("Drift angle where tyres start losing grip (Higher = More grip in corners)")]
-        public float MinGripLossAngle = 20f;
         [Range(-30f, 30f)]
         public float ToeFront;
         [Range(-30f, 30f)]
         public float ToeRear;
+
+        [Header("Tyres")]
+        public TyreData FrontTyres;
+        public TyreData RearTyres;
+
+        [Header("Body Kit")]
+        public BodyKitData BodyKit;
+
+        public float CarTotalMass => VehicleMass + (FrontTyres.Mass * 2) + (RearTyres.Mass * 2);
+        public float FrontAxelMassResponsibility => (VehicleMass * 0.5f) + (FrontTyres.Mass * 2);
+        public float RearAxelMassResponsibility => (VehicleMass * 0.5f) + (RearTyres.Mass * 2);
     }
 }

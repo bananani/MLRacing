@@ -23,20 +23,14 @@ namespace Common.Components.CarParts
         {
             _carData = carData;
             _steeringType = steeringType;
-            _leftTyre.Init(carData, _isRearAxle ? TyreIdentifier.RL : TyreIdentifier.FL);
-            _rightTyre.Init(carData, _isRearAxle ? TyreIdentifier.RR : TyreIdentifier.FR);
-        }
-
-        public void SetTyreMass(float mass)
-        {
-            _leftTyre.SetTyreMass(mass);
-            _rightTyre.SetTyreMass(mass);
+            _leftTyre.Init(carData, _isRearAxle ? TyrePositionIdentifier.RL : TyrePositionIdentifier.FL);
+            _rightTyre.Init(carData, _isRearAxle ? TyrePositionIdentifier.RR : TyrePositionIdentifier.FR);
         }
 
         public void Accelerate(float torque)
         {
-            _leftTyre.AddForce(torque);
-            _rightTyre.AddForce(torque);
+            _leftTyre.Accelerate(torque);
+            _rightTyre.Accelerate(torque);
         }
 
         public void Brake(float strength)

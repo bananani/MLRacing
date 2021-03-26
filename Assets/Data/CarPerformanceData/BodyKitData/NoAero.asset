@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15f40238c1d87ff439b25b2255cd188e, type: 3}
-  m_Name: CarCustomizationData
+  m_Script: {fileID: 11500000, guid: 6d99fd642332802439148fc8e3bb4204, type: 3}
+  m_Name: NoAero
   m_EditorClassIdentifier: 
-  BaseColor: {r: 0.019469945, g: 0.3679245, b: 0, a: 1}
-  Customization1: {r: 1, g: 1, b: 1, a: 1}
-  Customization2: {r: 1, g: 0.8207309, b: 0, a: 1}
+  FrontSplitterDownforce: 0
+  RearWingDownforce: 0

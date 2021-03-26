@@ -13,12 +13,18 @@ namespace Common.Components
             _car = GetComponent<Car>();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             UpdateDriver();
         }
 
+        private void FixedUpdate()
+        {
+            FixedUpdateDriver();
+        }
+
         protected abstract void UpdateDriver();
+        protected abstract void FixedUpdateDriver();
 
         protected void Accelerate(float strength)
         {

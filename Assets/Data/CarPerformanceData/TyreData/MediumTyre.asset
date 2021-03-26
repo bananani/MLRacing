@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49958e8792302b8439c31f603fcd815d, type: 3}
+  m_Name: MediumTyre
+  m_EditorClassIdentifier: 
+  Mass: 15
+  Radius: 300
+  CompoundFriction: 2.5
+  SidewaysFrictionCoefficient: 1.3
+  ForwardsFrictionCoefficient: 1.8
+  _stationaryFrictionCoefficient: 1
+  _stationaryFrictionMaxVelocity: 15
+  _peakFrictionCoefficient: 1.2
+  _peakFrictionVelocity: 20
+  _limitFrictionCoefficient: 0.4
+  _limitFrictionMinVelocity: 50
+  _frictionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 8
+      value: 1.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.6
+      outWeight: 0.2
+    - serializedVersion: 3
+      time: 35
+      value: 0.4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.8
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

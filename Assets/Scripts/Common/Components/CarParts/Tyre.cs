@@ -1,5 +1,5 @@
-using System;
 using Common.Constants;
+using Common.DataModels.Debug;
 using Common.Identifiers;
 using Common.ScriptableObjects;
 using Common.Utils;
@@ -35,17 +35,14 @@ namespace Common.Components.CarParts
         private float _currentBrakingForce;
         private float _rawInputForce;
 
-        // TODO: Figure out a way to do shifting center of mass and calculate grip using that
-        private float _groundContactMultiplier = 1f;
         // How much weight does this tyre have to carry (Vehicle total mass / amount of contact points)
         private float _massResponsibility => _rearAxel ? _carData.RearAxelMassResponsibility * 0.5f : _carData.FrontAxelMassResponsibility * 0.5f;
 
         // How much weight is put onto this tyre on this frame
-        private float _downwardsForce => _massResponsibility * _groundContactMultiplier;
-        private float _effectiveGrip => _tyreData.CompoundBaseFriction * _massResponsibility * _groundContactMultiplier;
+        private float _downwardsForce => _massResponsibility * _downforce;
+        private float _effectiveGrip => _tyreData.CompoundBaseFriction * _massResponsibility;
         private float _currentForceMomentumResponsibility => _massResponsibility * (_currentVelocityInMetersPerSecond / Time.fixedDeltaTime);
-        // Getter for the wing effect
-        private float _downforceEffect => (_rearAxel ? _carData.BodyKit?.RearWingDownforce : _carData.BodyKit?.FrontSplitterDownforce) ?? 0f;
+        private float _downforce;
 
         // Determines where this tyre is located in the car
         private TyrePositionIdentifier _tyrePosition;
@@ -111,7 +108,6 @@ namespace Common.Components.CarParts
         {
             Reset();
 
-            CalculateDownforce();
             CalculatePlayerInitiatedForces();
             CalculatePhysics();
             ApplyPhysics();
@@ -128,23 +124,23 @@ namespace Common.Components.CarParts
 
         private void HoldOriginalPosition() => transform.localPosition = _originalPosition;
 
-        private void CalculateDownforce()
-        {
-            if(_downforceEffect == 0f)
-            {
-                _groundContactMultiplier = 1f;
-                return;
-            }
-
-            // Downforce effect = <set downforce coefficient> * <forwards velocity>^2
-            float downforceEffect = _downforceEffect * (_currentForwardsVelocityInMetersPerSecond * _currentForwardsVelocityInMetersPerSecond);
-            // Full downforce effect has to be divided among both tyres
-            downforceEffect *= 0.5f;
-            // Calculate downforce effect relative to fixedDeltaTime
-            downforceEffect *= CAero.AERO_EFFECTIVENESS_MULTIPLIER;
-
-            _groundContactMultiplier = 1f + downforceEffect;
-        }
+        //private void CalculateDownforce()
+        //{
+        //    if(_downforceEffect == 0f)
+        //    {
+        //        _groundContactMultiplier = 1f;
+        //        return;
+        //    }
+        //
+        //    // Downforce effect = <set downforce coefficient> * <forwards velocity>^2
+        //    float downforceEffect = _downforceEffect * (_currentForwardsVelocityInMetersPerSecond * _currentForwardsVelocityInMetersPerSecond);
+        //    // Full downforce effect has to be divided among both tyres
+        //    downforceEffect *= 0.5f;
+        //    // Calculate downforce effect relative to fixedDeltaTime
+        //    downforceEffect *= CAero.AERO_EFFECTIVENESS_MULTIPLIER;
+        //
+        //    _groundContactMultiplier = 1f + downforceEffect;
+        //}
 
         private void CalculatePlayerInitiatedForces()
         {
@@ -174,6 +170,7 @@ namespace Common.Components.CarParts
         public void Accelerate(float force) => _rawInputForce = force;
         public void Brake(float strength) => _currentBrakingForce = strength;
         public void Turn(float degrees) => transform.localEulerAngles = new Vector3(0, 0, GetToeAngle() + degrees);
+        public void ApplyDownforce(float downforce) => _downforce = downforce;
 
         private Vector2 GetSidewaysFriction() => -_currentSidewaysVelocity * _surfaceSidewaysGripCoefficient * _sidewaysGripCoefficient * _effectiveGrip;
         private Vector2 GetRollingFriction() => -_currentForwardsVelocity * CTyre.ROLLING_RESISTANCE * CTyre.ROLLING_RESISTANCE * _effectiveGrip;
@@ -235,6 +232,20 @@ namespace Common.Components.CarParts
 
             return bestSurface;
         }
+
+        public TyreDebugData CollectDebugData() =>
+            new TyreDebugData(
+                    _relativeVelocity,
+                    Vector2.zero,
+                    GetSidewaysFriction(),
+                    GetRollingFriction(),
+                    GetBrakingFriction(),
+                    _massResponsibility,
+                    _effectiveGrip,
+                    _downforce,
+                    0f,
+                    _currentSurface?.SurfaceName
+                );
 
 #if UNITY_EDITOR
         private const float GIZMO_SCALE = 0.005f;

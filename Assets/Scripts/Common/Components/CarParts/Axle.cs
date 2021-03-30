@@ -1,3 +1,4 @@
+using Common.DataModels.Debug;
 using Common.Identifiers;
 using Common.ScriptableObjects;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Common.Components.CarParts
         private float _maxTurnRadius => _carData.MaxSteeringAngle;
         private bool _useForSteering => (_carData.SteeringType & _steeringType) == _steeringType;
         private bool _isRearAxle => (_steeringType & SteeringTypeIdentifier.REAR) == SteeringTypeIdentifier.REAR;
+
+        public float CurrentDownforce { get; private set; }
 
         public void Init(CarData carData, SteeringTypeIdentifier steeringType)
         {
@@ -52,6 +55,18 @@ namespace Common.Components.CarParts
 
             _leftTyre.Turn(turnDegrees);
             _rightTyre.Turn(turnDegrees);
+        }
+
+        public void ApplyDownforce(float downforce)
+        {
+            CurrentDownforce = downforce;
+            _leftTyre.ApplyDownforce(downforce * 0.5f);
+            _rightTyre.ApplyDownforce(downforce * 0.5f);
+        }
+
+        public (TyreDebugData leftTyreDebugData, TyreDebugData rightTyreDebugData) CollectDebugData()
+        {
+            return (_leftTyre.CollectDebugData(), _rightTyre.CollectDebugData());
         }
     }
 }

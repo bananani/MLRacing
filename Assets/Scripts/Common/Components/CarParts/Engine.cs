@@ -1,3 +1,4 @@
+using Common.DataModels.Debug;
 using Common.ScriptableObjects;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ namespace Common.Components.CarParts
         public void Accelerate(float strength)
         {
             _drivetrain.Accelerate(strength * _maxAcceleration);
+        }
+
+        public EngineDebugData CollectDebugData()
+        {
+            return new EngineDebugData(0f);
         }
     }
 }

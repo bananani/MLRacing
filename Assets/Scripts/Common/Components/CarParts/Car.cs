@@ -1,5 +1,8 @@
-﻿using Common.Identifiers;
+﻿using Common.Constants;
+using Common.DataModels.Debug;
+using Common.Identifiers;
 using Common.ScriptableObjects;
+using Common.Utils;
 using UnityEngine;
 
 namespace Common.Components.CarParts
@@ -41,15 +44,16 @@ namespace Common.Components.CarParts
         public float CurrentVelocityInMetersPerSecond => _rigidbody.velocity.magnitude;
         public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
 
-        public float CurrentForwardsVelocityInMetersPerSecond => _rigidbody.velocity.y;
+        public float CurrentForwardsVelocityInMetersPerSecond => _relativeVelocity.y;
         public float CurrentForwardVelocityInKilometersPerHour => CurrentForwardsVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
 
         public Vector3 CurrentPosition => _body.transform.position;
         public float CurrentVelocityDirection => Vector2.SignedAngle(Vector2.up, _rigidbody.velocity.normalized);
         public float CurrentVehicleRotation => transform.rotation.eulerAngles.z;
 
-        private float _acceleration = 0f;
-        private float _previousFrameVelocity = 0f;
+        private Vector2 _relativeVelocity => Vector2Utils.GetRotatedVelocityVector(_rigidbody.velocity, -transform.rotation.eulerAngles.z);
+        private Vector2 _acceleration;
+        private Vector2 _previousFrameVelocity;
 
         private void Awake()
         {
@@ -64,8 +68,10 @@ namespace Common.Components.CarParts
 
         private void FixedUpdate()
         {
-            _acceleration = (CurrentVelocityInMetersPerSecond - _previousFrameVelocity) / Time.fixedDeltaTime;
-            _previousFrameVelocity = CurrentVelocityInMetersPerSecond;
+            _acceleration = (_relativeVelocity - _previousFrameVelocity) / Time.fixedDeltaTime;
+            _previousFrameVelocity = _relativeVelocity;
+
+            ApplyDownforce();
         }
 
         private void Init(CarData carData)
@@ -111,6 +117,15 @@ namespace Common.Components.CarParts
             _rearAxle.Turn(strength);
         }
 
+        public void ApplyDownforce()
+        {
+            float forwardsVelocity = Mathf.Max(0f, CurrentForwardsVelocityInMetersPerSecond);
+            float downforceMultiplier = CAero.AIR_DENSITY * (forwardsVelocity * forwardsVelocity) * 0.5f;
+
+            _frontAxle.ApplyDownforce(_carData.BodyKit.FrontSplitterSurfaceArea * _carData.BodyKit.FrontSplitterLiftCoefficient * downforceMultiplier);
+            _rearAxle.ApplyDownforce(_carData.BodyKit.RearWingSurfaceArea * _carData.BodyKit.RearWingLiftCoefficient * downforceMultiplier);
+        }
+
         private void CheckExternalCarDataChanges()
         {
             if(_currentBodyMass != _carData.VehicleMass)
@@ -127,6 +142,26 @@ namespace Common.Components.CarParts
             {
                 CarDataCustomizationChanged?.Invoke();
             }
+        }
+
+        public CarDebugData CollectDebugData()
+        {
+            (TyreDebugData leftFrontTyreDebugData, TyreDebugData rightFrontTyreDebugData) = _frontAxle.CollectDebugData();
+            (TyreDebugData leftRearTyreDebugData, TyreDebugData rightRearTyreDebugData) = _rearAxle.CollectDebugData();
+            AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce);
+            EngineDebugData engineDebugData = _engine.CollectDebugData();
+            VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration);
+
+            return new CarDebugData(
+                    velocityDebugData,
+                    engineDebugData,
+                    leftFrontTyreDebugData,
+                    rightFrontTyreDebugData,
+                    leftRearTyreDebugData,
+                    rightRearTyreDebugData,
+                    aeroDebugData
+                );
+            ;
         }
 
         private void OnCarDataChanged() => UpdateCarMassData();

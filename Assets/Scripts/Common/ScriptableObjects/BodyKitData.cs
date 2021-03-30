@@ -7,8 +7,20 @@ namespace Common.ScriptableObjects
     {
         [Header("Aero")]
         [Min(0)]
-        public float FrontSplitterDownforce;
+        public float FrontWingWidth;
+        [Min(0), Tooltip("Thickness of the wing from the front")]
+        public float FrontWingChord;
+        [Range(0f, 2f)]
+        public float FrontSplitterLiftCoefficient;
+
         [Min(0)]
-        public float RearWingDownforce;
+        public float RearWingWidth;
+        [Min(0), Tooltip("Thickness of the wing from the front")]
+        public float RearWingChord;
+        [Range(0f, 2f)]
+        public float RearWingLiftCoefficient;
+
+        public float FrontSplitterSurfaceArea => FrontWingChord * FrontWingWidth;
+        public float RearWingSurfaceArea => RearWingChord * RearWingWidth;
     }
 }

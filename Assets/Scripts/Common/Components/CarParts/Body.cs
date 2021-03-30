@@ -12,7 +12,7 @@ namespace Common.Components.CarParts
         private SpriteRenderer _renderer;
         private Material _carMaterial;
 
-        void Awake()
+        private void Awake()
         {
             _collider = GetComponent<BoxCollider2D>();
             _renderer = GetComponent<SpriteRenderer>();
@@ -32,7 +32,7 @@ namespace Common.Components.CarParts
             _carMaterial.SetColor("_CustomizationColorB", _customizationData.Customization2);
         }
 
-        void OnCollisionEnter2D(Collision2D collider)
+        private void OnCollisionEnter2D(Collision2D collider)
         {
             Debug.Log("Look where you're going, nutter!");
         }

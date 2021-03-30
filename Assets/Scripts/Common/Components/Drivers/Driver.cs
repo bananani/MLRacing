@@ -15,16 +15,16 @@ namespace Common.Components
 
         private void Update()
         {
-            UpdateDriver();
+            DriverUpdate();
         }
 
         private void FixedUpdate()
         {
-            FixedUpdateDriver();
+            DriverFixedUpdate();
         }
 
-        protected abstract void UpdateDriver();
-        protected abstract void FixedUpdateDriver();
+        protected abstract void DriverUpdate();
+        protected abstract void DriverFixedUpdate();
 
         protected void Accelerate(float strength)
         {

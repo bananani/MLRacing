@@ -160,8 +160,8 @@ Camera:
   m_GameObject: {fileID: 15448407}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -206,7 +206,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &15448411
 MonoBehaviour:
@@ -396,6 +396,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Viper_SRT_1
       objectReference: {fileID: 0}
+    - target: {fileID: 681833367357377097, guid: 7e669ecef2676b64a99fac8bf415b167,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 681833367357377141, guid: 7e669ecef2676b64a99fac8bf415b167,
         type: 3}
       propertyPath: m_RootOrder
@@ -451,50 +456,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 129.878
       objectReference: {fileID: 0}
-    - target: {fileID: 2720957553117039328, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 1.0499996
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720957553117039328, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: -1.6000006
-      objectReference: {fileID: 0}
-    - target: {fileID: 3612373321488894936, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -1.0499996
-      objectReference: {fileID: 0}
-    - target: {fileID: 3612373321488894936, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: -1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6399478600827912512, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 1.0499996
-      objectReference: {fileID: 0}
-    - target: {fileID: 6399478600827912512, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 1.6
-      objectReference: {fileID: 0}
     - target: {fileID: 6568662706369393119, guid: 7e669ecef2676b64a99fac8bf415b167,
         type: 3}
       propertyPath: _driverType
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9015622467865216359, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -1.0499996
-      objectReference: {fileID: 0}
-    - target: {fileID: 9015622467865216359, guid: 7e669ecef2676b64a99fac8bf415b167,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 1.6000006
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e669ecef2676b64a99fac8bf415b167, type: 3}
@@ -508,7 +473,7 @@ PrefabInstance:
     - target: {fileID: 1638475929643550137, guid: 7bcc4dc2f5968a0459f26efb24eae917,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1638475929643550137, guid: 7bcc4dc2f5968a0459f26efb24eae917,
         type: 3}

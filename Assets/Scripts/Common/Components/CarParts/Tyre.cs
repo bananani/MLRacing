@@ -1,3 +1,4 @@
+using System;
 using Common.Constants;
 using Common.Identifiers;
 using Common.ScriptableObjects;
@@ -27,7 +28,6 @@ namespace Common.Components.CarParts
             }
         }
 
-        private Vector3 _originalPosition;
         private TrailRenderer _trailRenderer;
         private ParticleSystem _smokeSystem;
         private ParticleSystem.EmissionModule _emissionModule;
@@ -83,6 +83,7 @@ namespace Common.Components.CarParts
 
         private Vector2 _currentFramePlayerInitiatedForces;
         private Vector2 _currentFramePhysicsForces;
+        private Vector2 _originalPosition;
 
         // Determines if the car is under acceleration caused by the player input
         private bool _accelerating => _rawInputForce != 0;
@@ -91,10 +92,10 @@ namespace Common.Components.CarParts
 
         private void Start()
         {
-            _originalPosition = transform.localPosition;
             _trailRenderer = GetComponent<TrailRenderer>();
             _smokeSystem = GetComponent<ParticleSystem>();
             _emissionModule = _smokeSystem.emission;
+            _originalPosition = transform.localPosition;
         }
 
         public void Init(CarData carData, TyrePositionIdentifier tyrePosition)
@@ -104,11 +105,7 @@ namespace Common.Components.CarParts
             UpdateTyreMass();
         }
 
-        private void Update()
-        {
-            HoldOriginalPosition();
-            _currentSurface = GetSurface();
-        }
+        private void Update() => _currentSurface = GetSurface();
 
         private void FixedUpdate()
         {
@@ -126,6 +123,7 @@ namespace Common.Components.CarParts
         {
             _currentFramePhysicsForces = Vector2.zero;
             _currentFramePlayerInitiatedForces = Vector2.zero;
+            HoldOriginalPosition();
         }
 
         private void HoldOriginalPosition() => transform.localPosition = _originalPosition;
@@ -168,8 +166,8 @@ namespace Common.Components.CarParts
             bool drifting = _sidewaysGripCoefficient < CTyre.TYRE_TRAIL_SLIP_THRESHOLD;
             bool lockedBrakes = !IsTyreRolling;
 
-            _trailRenderer.emitting = drifting || lockedBrakes;
-            _emissionModule.enabled = drifting || lockedBrakes;
+            _trailRenderer.emitting = drifting || lockedBrakes || (_currentSurface?.TyreTrailsAlways ?? false);
+            _emissionModule.enabled = drifting || lockedBrakes || (_currentSurface?.TyreSmokeAlways ?? false);
         }
 
         public void UpdateTyreMass() => _rigidbody.mass = _tyreData.Mass;
@@ -202,44 +200,40 @@ namespace Common.Components.CarParts
 
         public float GetDriftAngle() => Mathf.Min(_tyreAngleRelativeToForwardsVelocity, _tyreAngleRelativeToBackwardsVelocity);
 
+        private RaycastHit2D[] _tyreRaycastResults;
         private SurfaceMaterial GetSurface()
         {
-            return null;
-            RaycastHit[] result = Physics.RaycastAll(_gripRay, float.MaxValue);
-
-            for(int i = result.Length - 1; i >= 0; i--)
+            if(_tyreRaycastResults == null)
             {
-                RaycastHit hit = result[i];
-                GameObject go = hit.transform.gameObject;
-                SpriteRenderer rend = go.GetComponent<SpriteRenderer>();
-                if(rend == null)
+                _tyreRaycastResults = new RaycastHit2D[32];
+            }
+
+            int resultCount = Physics2D.RaycastNonAlloc(transform.position, Vector2.zero, _tyreRaycastResults, 0f, LayerMask.GetMask("Surface"));
+
+            SurfaceMaterial bestSurface = null;
+            for(int i = resultCount - 1; i >= 0; i--)
+            {
+                RaycastHit2D hit = _tyreRaycastResults[i];
+                if(!(hit.transform.GetComponentInParent<SurfaceMaterial>() is SurfaceMaterial sf))
                 {
                     continue;
                 }
 
-                Vector2 localPos = hit.transform.InverseTransformPoint(hit.point);
-                localPos += rend.sprite.pivot / rend.sprite.pixelsPerUnit;
-
-                Vector2 uv = localPos / rend.sprite.bounds.size;
-                Texture2D tex = rend.sprite.texture as Texture2D;
-
-                int x = (int)(uv.x * tex.width);
-                int y = (int)(uv.y * tex.height);
-                var pix = tex.GetPixel(x, y);
-
-                if(pix.a > 0.1f)
+                if(bestSurface == null)
                 {
-                    SurfaceMaterial sf = go.GetComponent<SurfaceMaterial>();
-                    if(sf == null)
-                    {
-                        continue;
-                    }
-
-                    return sf;
+                    bestSurface = sf;
+                    continue;
                 }
+
+                if(sf.Priority < bestSurface.Priority)
+                {
+                    continue;
+                }
+
+                bestSurface = sf;
             }
 
-            return null;
+            return bestSurface;
         }
 
 #if UNITY_EDITOR

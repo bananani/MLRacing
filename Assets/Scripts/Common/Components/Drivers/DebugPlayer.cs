@@ -4,9 +4,9 @@ namespace Common.Components.Drivers
 {
     public class DebugPlayer : Driver
     {
-        protected override void UpdateDriver() { }
+        protected override void DriverUpdate() { }
 
-        protected override void FixedUpdateDriver()
+        protected override void DriverFixedUpdate()
         {
             if(Input.GetKey(KeyCode.Space))
             {
@@ -19,8 +19,16 @@ namespace Common.Components.Drivers
 
             if(Input.GetKey(KeyCode.W))
             {
-                Accelerate(1);
-                Brake(0);
+                if(Input.GetKey(KeyCode.S))
+                {
+                    Accelerate(-1);
+                    Brake(0);
+                }
+                else
+                {
+                    Accelerate(1);
+                    Brake(0);
+                }
             }
             else if(Input.GetKey(KeyCode.S))
             {

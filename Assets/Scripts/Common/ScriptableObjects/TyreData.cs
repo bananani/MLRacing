@@ -12,6 +12,8 @@ namespace Common.ScriptableObjects
         public float Radius = 300f;
         [Range(0f, 20f)]
         public float CompoundBaseFriction = 3f;
+        [Range(float.Epsilon, 0.1f)]
+        public float RollingResistance = 0.01f;
         [Range(0f, 2f)]
         public float SidewaysFrictionCoefficient = 1f;
         [Range(0f, 2f)]

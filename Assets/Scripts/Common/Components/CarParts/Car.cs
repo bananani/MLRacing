@@ -10,8 +10,6 @@ namespace Common.Components.CarParts
     [RequireComponent(typeof(Rigidbody2D))]
     public class Car : MonoBehaviour
     {
-        private const float MS_TO_KMH_CONVERSION = 3.6f;
-
         private delegate void CarDataChangedEvent();
         private event CarDataChangedEvent CarDataChanged;
         private event CarDataChangedEvent CarDataCustomizationChanged;
@@ -42,10 +40,10 @@ namespace Common.Components.CarParts
         public float CurrentForceMomentum => _carData.CarTotalMass * (CurrentVelocityInMetersPerSecond / Time.fixedDeltaTime);
 
         public float CurrentVelocityInMetersPerSecond => _rigidbody.velocity.magnitude;
-        public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
+        public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * CVelocity.MS_TO_KMH_CONVERSION;
 
         public float CurrentForwardsVelocityInMetersPerSecond => _relativeVelocity.y;
-        public float CurrentForwardVelocityInKilometersPerHour => CurrentForwardsVelocityInMetersPerSecond * MS_TO_KMH_CONVERSION;
+        public float CurrentForwardVelocityInKilometersPerHour => CurrentForwardsVelocityInMetersPerSecond * CVelocity.MS_TO_KMH_CONVERSION;
 
         public Vector3 CurrentPosition => _body.transform.position;
         public float CurrentVelocityDirection => Vector2.SignedAngle(Vector2.up, _rigidbody.velocity.normalized);
@@ -54,6 +52,8 @@ namespace Common.Components.CarParts
         private Vector2 _relativeVelocity => Vector2Utils.GetRotatedVelocityVector(_rigidbody.velocity, -transform.rotation.eulerAngles.z);
         private Vector2 _acceleration;
         private Vector2 _previousFrameVelocity;
+
+        private float _currentDriftAngle => Mathf.Min(Vector2.Angle(Vector2.up, _relativeVelocity), Vector2.Angle(Vector2.up, -_relativeVelocity));
 
         private void Awake()
         {
@@ -72,6 +72,7 @@ namespace Common.Components.CarParts
             _previousFrameVelocity = _relativeVelocity;
 
             ApplyDownforce();
+            ApplyAirResistance();
         }
 
         private void Init(CarData carData)
@@ -117,6 +118,9 @@ namespace Common.Components.CarParts
             _rearAxle.Turn(strength);
         }
 
+        private float _airResistance => 0.5f * CAero.AIR_DENSITY * (CurrentVelocityInMetersPerSecond * CurrentVelocityInMetersPerSecond) * _carData.BodyKit.AirResistanceCoefficient * _body.CalculateBodySurfaceArea(_currentDriftAngle, _carData.BodyKit.CarHeight);
+        public void ApplyAirResistance() => _rigidbody.AddForce(-_rigidbody.velocity.normalized * _airResistance);
+
         public void ApplyDownforce()
         {
             float forwardsVelocity = Mathf.Max(0f, CurrentForwardsVelocityInMetersPerSecond);
@@ -148,7 +152,7 @@ namespace Common.Components.CarParts
         {
             (TyreDebugData leftFrontTyreDebugData, TyreDebugData rightFrontTyreDebugData) = _frontAxle.CollectDebugData();
             (TyreDebugData leftRearTyreDebugData, TyreDebugData rightRearTyreDebugData) = _rearAxle.CollectDebugData();
-            AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce);
+            AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce, _airResistance);
             EngineDebugData engineDebugData = _engine.CollectDebugData();
             VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration);
 

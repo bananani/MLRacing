@@ -12,6 +12,16 @@ namespace Common.Components.CarParts
         private SpriteRenderer _renderer;
         private Material _carMaterial;
 
+        private float BodyLength => _collider.bounds.size.y + (_collider.edgeRadius * 2);
+        private float BodyWidth => _collider.bounds.size.x + (_collider.edgeRadius * 2);
+        private float BodyWidest => Mathf.Sqrt((BodyLength * BodyLength) + (BodyWidth * BodyWidth));
+        private float AngleAtWidest => Mathf.Asin((BodyLength * Mathf.Sin(90)) / BodyWidest);
+
+        public float CalculateBodySurfaceArea(float driftAngle, float height) =>
+            (driftAngle < AngleAtWidest ?
+                Mathf.Lerp(BodyWidth, BodyWidest, driftAngle / AngleAtWidest) :
+                Mathf.Lerp(BodyWidest, BodyLength, (driftAngle - AngleAtWidest) / (90 - AngleAtWidest))) * height;
+
         private void Awake()
         {
             _collider = GetComponent<BoxCollider2D>();

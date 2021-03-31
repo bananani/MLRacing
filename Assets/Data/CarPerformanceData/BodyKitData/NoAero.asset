@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d99fd642332802439148fc8e3bb4204, type: 3}
   m_Name: NoAero
   m_EditorClassIdentifier: 
-  FrontSplitterDownforce: 0
-  RearWingDownforce: 0
+  CarHeight: 2
+  AirResistanceCoefficient: 0.24
+  FrontWingWidth: 0
+  FrontWingChord: 0
+  FrontSplitterLiftCoefficient: 0
+  RearWingWidth: 0
+  RearWingChord: 0
+  RearWingLiftCoefficient: 0

@@ -15,6 +15,7 @@ MonoBehaviour:
   Mass: 15
   Radius: 300
   CompoundBaseFriction: 3
+  RollingResistance: 0.01
   SidewaysFrictionCoefficient: 1
   ForwardsFrictionCoefficient: 1.8
   _stationaryFrictionCoefficient: 1

@@ -124,24 +124,6 @@ namespace Common.Components.CarParts
 
         private void HoldOriginalPosition() => transform.localPosition = _originalPosition;
 
-        //private void CalculateDownforce()
-        //{
-        //    if(_downforceEffect == 0f)
-        //    {
-        //        _groundContactMultiplier = 1f;
-        //        return;
-        //    }
-        //
-        //    // Downforce effect = <set downforce coefficient> * <forwards velocity>^2
-        //    float downforceEffect = _downforceEffect * (_currentForwardsVelocityInMetersPerSecond * _currentForwardsVelocityInMetersPerSecond);
-        //    // Full downforce effect has to be divided among both tyres
-        //    downforceEffect *= 0.5f;
-        //    // Calculate downforce effect relative to fixedDeltaTime
-        //    downforceEffect *= CAero.AERO_EFFECTIVENESS_MULTIPLIER;
-        //
-        //    _groundContactMultiplier = 1f + downforceEffect;
-        //}
-
         private void CalculatePlayerInitiatedForces()
         {
             _currentTorque = (_rawInputForce * (1f - _currentBrakingForce)) / _tyreData.Radius;
@@ -173,7 +155,7 @@ namespace Common.Components.CarParts
         public void ApplyDownforce(float downforce) => _downforce = downforce;
 
         private Vector2 GetSidewaysFriction() => -_currentSidewaysVelocity * _surfaceSidewaysGripCoefficient * _sidewaysGripCoefficient * _effectiveGrip;
-        private Vector2 GetRollingFriction() => -_currentForwardsVelocity * CTyre.ROLLING_RESISTANCE * CTyre.ROLLING_RESISTANCE * _effectiveGrip;
+        private Vector2 GetRollingFriction() => -_currentForwardsVelocity * _tyreData.RollingResistance * _massResponsibility;
         private Vector2 GetBrakingFriction() => -_currentForwardsVelocity * _currentBrakingForce * _effectiveGrip * (IsTyreRolling ? _surfaceForwardsGripCoefficient * _forwardsGripCoefficient : _surfaceSidewaysGripCoefficient * _lockedBrakesGripCoefficient);
 
         private bool IsTyreRolling => _currentBrakingForce < CTyre.BRAKE_LOCK_THRESHOLD;

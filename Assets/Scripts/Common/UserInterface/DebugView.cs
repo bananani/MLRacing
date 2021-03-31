@@ -1,5 +1,7 @@
 ﻿using Common.Components;
+using Common.Constants;
 using Common.DataModels.Debug;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -18,22 +20,18 @@ namespace Common.UserInterface
         private TextMeshProUGUI _frontAeroDownforceLabel;
         [SerializeField]
         private TextMeshProUGUI _rearAeroDownforceLabel;
-
-        [Header("LeftFrontTyre labels")]
         [SerializeField]
-        private TextMeshProUGUI _lfSurfaceLabel;
+        private TextMeshProUGUI _airResistanceLabel;
 
-        [Header("RightFrontTyre labels")]
+        [Header("Tyre labels")]
         [SerializeField]
-        private TextMeshProUGUI _rfSurfaceLabel;
-
-        [Header("LeftRearTyre labels")]
+        private TyreDebugDataContainer _leftFrontTyre;
         [SerializeField]
-        private TextMeshProUGUI _lrSurfaceLabel;
-
-        [Header("RightRearTyre labels")]
+        private TyreDebugDataContainer _rightFrontTyre;
         [SerializeField]
-        private TextMeshProUGUI _rrSurfaceLabel;
+        private TyreDebugDataContainer _leftRearTyre;
+        [SerializeField]
+        private TyreDebugDataContainer _rightRearTyre;
 
         private void OnEnable() => DebugDataObject.DebugDataCollected += OnDebugDataCollected;
         private void OnDisable() => DebugDataObject.DebugDataCollected -= OnDebugDataCollected;
@@ -43,15 +41,17 @@ namespace Common.UserInterface
             SetVelocityDataLabels(debugData.Car.Velocity);
             SetEngineDataLabels(debugData.Car.Engine);
             SetAeroDataLabels(debugData.Car.Aero);
-            SetLeftFrontDataLabels(debugData.Car.LeftFrontTyre);
-            SetRightFrontDataLabels(debugData.Car.RightFrontTyre);
-            SetLeftRearDataLabels(debugData.Car.LeftRearTyre);
-            SetRightRearDataLabels(debugData.Car.RightRearTyre);
+
+            SetTyreDataLabels(_leftFrontTyre, debugData.Car.LeftFrontTyre);
+            SetTyreDataLabels(_rightFrontTyre, debugData.Car.RightFrontTyre);
+            SetTyreDataLabels(_leftRearTyre, debugData.Car.LeftRearTyre);
+            SetTyreDataLabels(_rightRearTyre, debugData.Car.RightRearTyre);
         }
 
         private void SetVelocityDataLabels(VelocityDebugData data)
         {
-            _currentVelocityLabel?.SetText($"Velocity: {data.Velocity}");
+            float speed = data.Velocity.magnitude;
+            _currentVelocityLabel?.SetText($"Velocity: {speed.ToString("0.0")} m/s ({(speed * CVelocity.MS_TO_KMH_CONVERSION).ToString("0.0")} kmh)");
             _currentAccelerationLabel?.SetText($"Acceleration: {data.Acceleration}");
         }
 
@@ -61,26 +61,20 @@ namespace Common.UserInterface
         {
             _frontAeroDownforceLabel?.SetText($"Downforce Front: {aero.FrontSplitterDownforce}");
             _rearAeroDownforceLabel?.SetText($"Downforce Rear: {aero.RearWingDownforce}");
+            _airResistanceLabel?.SetText($"AirResistance: {aero.CurrentAirResistance}");
         }
 
-        private void SetLeftFrontDataLabels(TyreDebugData data)
+        private void SetTyreDataLabels(TyreDebugDataContainer container, TyreDebugData data)
         {
-            _lfSurfaceLabel?.SetText(data.Surface);
-        }
-
-        private void SetRightFrontDataLabels(TyreDebugData data)
-        {
-            _rfSurfaceLabel?.SetText(data.Surface);
-        }
-
-        private void SetLeftRearDataLabels(TyreDebugData data)
-        {
-            _lrSurfaceLabel?.SetText(data.Surface);
-        }
-
-        private void SetRightRearDataLabels(TyreDebugData data)
-        {
-            _rrSurfaceLabel?.SetText(data.Surface);
+            container?.SurfaceLabel?.SetText("Surfc: " + data.Surface);
+            container?.AccelerationForceLabel?.SetText("Accel: " + data.AccelerationForce.ToString());
+            container?.SidewaysFrictionLabel?.SetText("SideF: " + data.SidewaysFriction.ToString());
+            container?.RollingFrictionLabel?.SetText("RollF: " + data.RollingFriction.ToString());
+            container?.BrakingFrictionLabel?.SetText("StopF: " + data.BrakingFriction.ToString());
+            container?.MassResponsibilityLabel?.SetText("MassR: " + data.MassResponsibility.ToString());
+            container?.EffectiveGripLabel?.SetText("EGrip: " + data.EffectiveGrip.ToString());
+            container?.DownforceLabel?.SetText("DownF: " + data.Downforce.ToString());
+            container?.TotalGripLabel?.SetText("Total: " + data.TotalGrip.ToString());
         }
     }
 }

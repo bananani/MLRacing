@@ -38,10 +38,9 @@ namespace Common.Components.CarParts
         // How much weight does this tyre have to carry (Vehicle total mass / amount of contact points)
         private float _massResponsibility => _rearAxel ? _carData.RearAxelMassResponsibility * 0.5f : _carData.FrontAxelMassResponsibility * 0.5f;
 
-        private float _newtonForceProducedByMassResponsibility => _massResponsibility * CPhysics.GRAVITY_ACCELERATION;
+        private float _newtonForceProducedByMassResponsibility => (_massResponsibility * CPhysics.GRAVITY_ACCELERATION) + _downforce;
 
         // How much weight is put onto this tyre on this frame
-        private float _downwardsForce => _massResponsibility * _downforce;
         private float _currentForceMomentumResponsibility => _massResponsibility * (_currentVelocityInMetersPerSecond / Time.fixedDeltaTime);
         private float _downforce;
 
@@ -160,10 +159,10 @@ namespace Common.Components.CarParts
         public void Turn(float degrees) => transform.localEulerAngles = new Vector3(0, 0, GetToeAngle() + degrees);
         public void ApplyDownforce(float downforce) => _downforce = downforce;
 
-        private Vector2 GetSidewaysFriction() => -_currentSidewaysVelocity * _surfaceSidewaysGripCoefficient * _sidewaysGripCoefficient * _newtonForceProducedByMassResponsibility;
+        private Vector2 GetSidewaysFriction() => Vector2.ClampMagnitude(-_currentSidewaysVelocity, _tyreData.MaxFrictionVelocity) * _surfaceSidewaysGripCoefficient * _sidewaysGripCoefficient * _newtonForceProducedByMassResponsibility;
         private Vector2 GetRollingFriction() => -_currentForwardsVelocity * _tyreData.RollingResistance * _newtonForceProducedByMassResponsibility;
-        private Vector2 GetBrakingFriction() => -_currentForwardsVelocity * _currentBrakingForce * (IsTyreRolling ? _surfaceForwardsGripCoefficient * _forwardsGripCoefficient : _surfaceSidewaysGripCoefficient * _lockedBrakesGripCoefficient) * _newtonForceProducedByMassResponsibility;
-        private Vector2 GetSurfaceMovementResistanceFriction() => -_relativeVelocity * _surfaceMovementResistanceCoefficient * _newtonForceProducedByMassResponsibility;
+        private Vector2 GetBrakingFriction() => Vector2.ClampMagnitude(-_currentForwardsVelocity, _tyreData.MaxFrictionVelocity) * _currentBrakingForce * (IsTyreRolling ? _surfaceForwardsGripCoefficient * _forwardsGripCoefficient : _surfaceSidewaysGripCoefficient * _lockedBrakesGripCoefficient) * _newtonForceProducedByMassResponsibility;
+        private Vector2 GetSurfaceMovementResistanceFriction() => -_relativeVelocity.normalized * _surfaceMovementResistanceCoefficient * _newtonForceProducedByMassResponsibility;
 
         private bool IsTyreRolling => _currentBrakingForce < CTyre.BRAKE_LOCK_THRESHOLD;
 
@@ -229,7 +228,7 @@ namespace Common.Components.CarParts
                     GetSidewaysFriction(),
                     GetRollingFriction(),
                     GetBrakingFriction(),
-                    _massResponsibility,
+                    _newtonForceProducedByMassResponsibility,
                     -1f,
                     _downforce,
                     -1f,

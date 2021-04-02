@@ -4136,7 +4136,7 @@ MonoBehaviour:
   SurfaceName: SAAAAND
   SidewaysGripCoefficient: 0.3
   ForwardsGripCoefficient: 0.3
-  SurfaceMovementResistanceCoefficient: 0.05
+  SurfaceMovementResistanceCoefficient: 2.2
   TyreTrailsAlways: 1
   TyreSmokeAlways: 1
   Priority: 1

@@ -16,12 +16,8 @@ namespace Common.ScriptableObjects
         public float SidewaysFrictionCoefficient = 1f;
         [Range(0f, 2f)]
         public float ForwardsFrictionCoefficient = 1.4f;
-
-        //[Header("Slip Data")]
-        //[Range(0f, 1f), Tooltip("Grip at locked brakes or at 90 degree drift (Higher = More grip when sliding)")]
-        //public float MinGripDuringSlip;
-        //[Range(0f, 90f), Tooltip("Drift angle where tyres start losing grip (Higher = More grip in corners)")]
-        //public float PeakGripMaxAngle = 20f;
+        [Min(0)]
+        public float MaxFrictionVelocity = 20f;
 
         [Header("Friction calculation data")]
         [SerializeField, Range(0f, 2f)]

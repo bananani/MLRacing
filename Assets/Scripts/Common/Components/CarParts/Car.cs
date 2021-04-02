@@ -153,7 +153,7 @@ namespace Common.Components.CarParts
             (TyreDebugData leftRearTyreDebugData, TyreDebugData rightRearTyreDebugData) = _rearAxle.CollectDebugData();
             AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce, _body.GetAirResistance(CurrentVelocityInMetersPerSecond, _currentDriftAngle));
             EngineDebugData engineDebugData = _engine.CollectDebugData();
-            VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration);
+            VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration, _currentDriftAngle);
 
             return new CarDebugData(
                     velocityDebugData,

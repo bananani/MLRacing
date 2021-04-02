@@ -14,6 +14,8 @@ namespace Common.UserInterface
         private TextMeshProUGUI _currentVelocityLabel;
         [SerializeField]
         private TextMeshProUGUI _currentAccelerationLabel;
+        [SerializeField]
+        private TextMeshProUGUI _currentDriftAngleLabel;
 
         [Header("Aero labels")]
         [SerializeField]
@@ -53,6 +55,7 @@ namespace Common.UserInterface
             float speed = data.Velocity.magnitude;
             _currentVelocityLabel?.SetText($"Velocity: {speed.ToString("0.0")} m/s ({(speed * CVelocity.MS_TO_KMH_CONVERSION).ToString("0.0")} kmh)");
             _currentAccelerationLabel?.SetText($"Acceleration: {data.Acceleration}");
+            _currentDriftAngleLabel?.SetText($"Drift Angle: {data.DriftAngle}°");
         }
 
         private void SetEngineDataLabels(EngineDebugData engine) { }
@@ -66,16 +69,16 @@ namespace Common.UserInterface
 
         private void SetTyreDataLabels(TyreDebugDataContainer container, TyreDebugData data)
         {
-            container?.SurfaceLabel?.SetText("Surfc: " + data.Surface);
-            container?.AccelerationForceLabel?.SetText("Accel: " + data.AccelerationForce.ToString());
-            container?.CurrentVelocityLabel?.SetText("CVel: " + data.CurrentRelativeVelocity.ToString());
-            container?.SidewaysFrictionLabel?.SetText("SideF: " + data.SidewaysFriction.ToString());
-            container?.RollingFrictionLabel?.SetText("RollF: " + data.RollingFriction.ToString());
-            container?.BrakingFrictionLabel?.SetText("StopF: " + data.BrakingFriction.ToString());
-            container?.MassResponsibilityLabel?.SetText("MassR: " + data.MassResponsibility.ToString());
-            container?.EffectiveGripLabel?.SetText("EGrip: " + data.EffectiveGrip.ToString());
-            container?.DownforceLabel?.SetText("DownF: " + data.Downforce.ToString());
-            container?.TotalGripLabel?.SetText("Total: " + data.TotalGrip.ToString());
+            container?.SurfaceLabel?.SetText($"Surfc: {data.Surface}");
+            container?.AccelerationForceLabel?.SetText($"Accel: {data.AccelerationForce.ToString()}");
+            container?.CurrentVelocityLabel?.SetText($"CVel: {data.CurrentRelativeVelocity.ToString()}");
+            container?.SidewaysFrictionLabel?.SetText($"SideF: {data.SidewaysFriction.x.ToString()} N");
+            container?.RollingFrictionLabel?.SetText($"RollF: {data.RollingFriction.y.ToString()} N");
+            container?.BrakingFrictionLabel?.SetText($"StopF: {data.BrakingFriction.y.ToString()} N");
+            container?.MassResponsibilityLabel?.SetText($"MassR: {data.MassResponsibility.ToString()} N");
+            container?.EffectiveGripLabel?.SetText($"EGrip: {data.EffectiveGrip.ToString()}");
+            container?.DownforceLabel?.SetText($"DownF: {data.Downforce.ToString()}");
+            container?.TotalGripLabel?.SetText($"Total: {data.TotalGrip.ToString()}");
         }
     }
 }

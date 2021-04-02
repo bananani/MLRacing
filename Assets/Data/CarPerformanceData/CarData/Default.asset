@@ -15,10 +15,10 @@ MonoBehaviour:
   CarName: Default
   DrivetrainType: 2
   SteeringType: 1
-  VehicleMass: 500
-  MaxAcceleration: 1000
+  VehicleMass: 800
+  MaxAcceleration: 2000
   MaxSteeringAngle: 35
-  ToeFront: 0
+  ToeFront: 1.5
   ToeRear: 0
   FrontTyres: {fileID: 11400000, guid: 9f0734a9793b43945bae80ac6ea8a21f, type: 2}
   RearTyres: {fileID: 11400000, guid: 9f0734a9793b43945bae80ac6ea8a21f, type: 2}

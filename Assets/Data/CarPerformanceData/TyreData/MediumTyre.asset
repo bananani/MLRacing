@@ -15,20 +15,20 @@ MonoBehaviour:
   Mass: 15
   Radius: 300
   RollingResistance: 0.01
-  SidewaysFrictionCoefficient: 1
-  ForwardsFrictionCoefficient: 1.8
+  SidewaysFrictionCoefficient: 0.8
+  ForwardsFrictionCoefficient: 1.4
   _stationaryFrictionCoefficient: 1
-  _stationaryFrictionMaxVelocity: 3
+  _stationaryFrictionMaxVelocity: 2
   _peakFrictionCoefficient: 1.2
-  _peakFrictionVelocity: 4
-  _peakToLimitSteepness: 0.05
-  _limitFrictionCoefficient: 0.4
-  _limitFrictionMinVelocity: 10
+  _peakFrictionVelocity: 3
+  _peakToLimitSteepness: 0.3
+  _limitFrictionCoefficient: 0.6
+  _limitFrictionMinVelocity: 20
   _frictionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 3
+      time: 2
       value: 1
       inSlope: 0
       outSlope: 0
@@ -37,22 +37,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 4
+      time: 3
       value: 1.2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 3
       inWeight: 0.6
-      outWeight: 0.05
+      outWeight: 0.3
     - serializedVersion: 3
-      time: 10
-      value: 0.4
+      time: 20
+      value: 0.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.95
+      inWeight: 0.7
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

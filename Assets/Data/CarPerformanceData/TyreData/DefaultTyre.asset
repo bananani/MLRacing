@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49958e8792302b8439c31f603fcd815d, type: 3}
   m_Name: MediumTyre
   m_EditorClassIdentifier: 
-  Mass: 15
+  Mass: 10
   Radius: 300
   RollingResistance: 0.01
-  SidewaysFrictionCoefficient: 0.8
-  ForwardsFrictionCoefficient: 1.4
+  SidewaysFrictionCoefficient: 0.9
+  ForwardsFrictionCoefficient: 1.3
   _stationaryFrictionCoefficient: 1
   _stationaryFrictionMaxVelocity: 2
-  _peakFrictionCoefficient: 1.2
-  _peakFrictionVelocity: 3
-  _peakToLimitSteepness: 0.3
-  _limitFrictionCoefficient: 0.6
-  _limitFrictionMinVelocity: 20
+  _peakFrictionCoefficient: 1.1
+  _peakFrictionVelocity: 4
+  _peakToLimitSteepness: 0.2
+  _limitFrictionCoefficient: 0.7
+  _limitFrictionMinVelocity: 10
   _frictionCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,22 +37,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 3
-      value: 1.2
+      time: 4
+      value: 1.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 3
       inWeight: 0.6
-      outWeight: 0.3
+      outWeight: 0.2
     - serializedVersion: 3
-      time: 20
-      value: 0.6
+      time: 10
+      value: 0.7
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.7
+      inWeight: 0.8
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

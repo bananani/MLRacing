@@ -1,3 +1,4 @@
+using Common.Constants;
 using Common.ScriptableObjects;
 using UnityEngine;
 
@@ -17,10 +18,18 @@ namespace Common.Components.CarParts
         private float BodyWidest => Mathf.Sqrt((BodyLength * BodyLength) + (BodyWidth * BodyWidth));
         private float AngleAtWidest => Mathf.Asin((BodyLength * Mathf.Sin(90)) / BodyWidest);
 
+        [Header("Air resistance")]
+        [SerializeField, Min(0)]
+        private float CarHeight;
+        [SerializeField, Min(0), Tooltip("How aerodynamic is the car? (Racing car: ~0.2, Cube: ~1.05)")]
+        private float AirResistanceCoefficient;
+
         public float CalculateBodySurfaceArea(float driftAngle, float height) =>
             (driftAngle < AngleAtWidest ?
                 Mathf.Lerp(BodyWidth, BodyWidest, driftAngle / AngleAtWidest) :
                 Mathf.Lerp(BodyWidest, BodyLength, (driftAngle - AngleAtWidest) / (90 - AngleAtWidest))) * height;
+
+        public float GetAirResistance(float airVelocity, float driftAngle) => 0.5f * CAero.AIR_DENSITY * (airVelocity * airVelocity) * AirResistanceCoefficient * CalculateBodySurfaceArea(driftAngle, CarHeight);
 
         private void Awake()
         {

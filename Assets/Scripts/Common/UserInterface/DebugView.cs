@@ -68,6 +68,7 @@ namespace Common.UserInterface
         {
             container?.SurfaceLabel?.SetText("Surfc: " + data.Surface);
             container?.AccelerationForceLabel?.SetText("Accel: " + data.AccelerationForce.ToString());
+            container?.CurrentVelocityLabel?.SetText("CVel: " + data.CurrentRelativeVelocity.ToString());
             container?.SidewaysFrictionLabel?.SetText("SideF: " + data.SidewaysFriction.ToString());
             container?.RollingFrictionLabel?.SetText("RollF: " + data.RollingFriction.ToString());
             container?.BrakingFrictionLabel?.SetText("StopF: " + data.BrakingFriction.ToString());

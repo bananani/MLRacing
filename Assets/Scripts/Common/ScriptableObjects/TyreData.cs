@@ -10,8 +10,6 @@ namespace Common.ScriptableObjects
         public float Mass = 20f;
         [Min(float.Epsilon), Tooltip("Tyre radius in mm")]
         public float Radius = 300f;
-        [Range(0f, 20f)]
-        public float CompoundBaseFriction = 3f;
         [Range(float.Epsilon, 0.1f)]
         public float RollingResistance = 0.01f;
         [Range(0f, 2f)]
@@ -35,6 +33,9 @@ namespace Common.ScriptableObjects
         private float _peakFrictionCoefficient = 1.2f;
         [SerializeField, Min(0)]
         private float _peakFrictionVelocity = 1f;
+        
+        [SerializeField, Space, Range(0f, 1f)]
+        private float _peakToLimitSteepness = 0.2f;
 
         [SerializeField, Space, Range(0f, 2f)]
         private float _limitFrictionCoefficient = 0.5f;
@@ -48,9 +49,12 @@ namespace Common.ScriptableObjects
         [ContextMenu("InitCurve")]
         public void InitFrictionCurve()
         {
+            float peakOutWeight = _peakToLimitSteepness;
+            float limitInWeight = 1 - _peakToLimitSteepness;
+
             Keyframe stationary = new Keyframe(_stationaryFrictionMaxVelocity, _stationaryFrictionCoefficient, 0f, 0f, 0f, 0f);
-            Keyframe peak = new Keyframe(_peakFrictionVelocity, _peakFrictionCoefficient, 0f, 0f, 0.6f, 0.2f);
-            Keyframe limit = new Keyframe(_limitFrictionMinVelocity, _limitFrictionCoefficient, 0f, 0f, 0.8f, 0f);
+            Keyframe peak = new Keyframe(_peakFrictionVelocity, _peakFrictionCoefficient, 0f, 0f, 0.6f, peakOutWeight);
+            Keyframe limit = new Keyframe(_limitFrictionMinVelocity, _limitFrictionCoefficient, 0f, 0f, limitInWeight, 0f);
 
             stationary.weightedMode = WeightedMode.Out;
             peak.weightedMode = WeightedMode.Both;

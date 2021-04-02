@@ -5136,7 +5136,6 @@ MonoBehaviour:
   _engine: {fileID: 6416943039057933028}
   _drivetrain: {fileID: 6416943039786436814}
   _body: {fileID: 5426718112818900320}
-  _rigidbody: {fileID: 5132947426628003226}
 --- !u!50 &5132947426628003226
 Rigidbody2D:
   serializedVersion: 4
@@ -20461,6 +20460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a27e46b115326498e297f95efa673d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CarHeight: 2
+  AirResistanceCoefficient: 0.24
 --- !u!212 &7876288743883382182
 SpriteRenderer:
   m_ObjectHideFlags: 0

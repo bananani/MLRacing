@@ -118,8 +118,7 @@ namespace Common.Components.CarParts
             _rearAxle.Turn(strength);
         }
 
-        private float _airResistance => 0.5f * CAero.AIR_DENSITY * (CurrentVelocityInMetersPerSecond * CurrentVelocityInMetersPerSecond) * _carData.BodyKit.AirResistanceCoefficient * _body.CalculateBodySurfaceArea(_currentDriftAngle, _carData.BodyKit.CarHeight);
-        public void ApplyAirResistance() => _rigidbody.AddForce(-_rigidbody.velocity.normalized * _airResistance);
+        public void ApplyAirResistance() => _rigidbody.AddForce(-_rigidbody.velocity.normalized * _body.GetAirResistance(CurrentVelocityInMetersPerSecond, _currentDriftAngle));
 
         public void ApplyDownforce()
         {
@@ -152,7 +151,7 @@ namespace Common.Components.CarParts
         {
             (TyreDebugData leftFrontTyreDebugData, TyreDebugData rightFrontTyreDebugData) = _frontAxle.CollectDebugData();
             (TyreDebugData leftRearTyreDebugData, TyreDebugData rightRearTyreDebugData) = _rearAxle.CollectDebugData();
-            AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce, _airResistance);
+            AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce, _body.GetAirResistance(CurrentVelocityInMetersPerSecond, _currentDriftAngle));
             EngineDebugData engineDebugData = _engine.CollectDebugData();
             VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration);
 

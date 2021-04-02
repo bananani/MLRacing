@@ -6,6 +6,7 @@ namespace Common.UserInterface
     public class TyreDebugDataContainer : MonoBehaviour
     {
         public TextMeshProUGUI SurfaceLabel;
+        public TextMeshProUGUI CurrentVelocityLabel;
         public TextMeshProUGUI AccelerationForceLabel;
         public TextMeshProUGUI SidewaysFrictionLabel;
         public TextMeshProUGUI RollingFrictionLabel;

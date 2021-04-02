@@ -1256,6 +1256,7 @@ MonoBehaviour:
   SurfaceName: Grass
   SidewaysGripCoefficient: 0.5
   ForwardsGripCoefficient: 0.5
+  SurfaceMovementResistanceCoefficient: 0
   TyreTrailsAlways: 1
   TyreSmokeAlways: 0
   Priority: 0
@@ -4024,6 +4025,7 @@ MonoBehaviour:
   SurfaceName: Road
   SidewaysGripCoefficient: 1
   ForwardsGripCoefficient: 1
+  SurfaceMovementResistanceCoefficient: 0
   TyreTrailsAlways: 0
   TyreSmokeAlways: 0
   Priority: 2
@@ -4134,6 +4136,7 @@ MonoBehaviour:
   SurfaceName: SAAAAND
   SidewaysGripCoefficient: 0.3
   ForwardsGripCoefficient: 0.3
+  SurfaceMovementResistanceCoefficient: 0.2
   TyreTrailsAlways: 1
   TyreSmokeAlways: 1
   Priority: 1

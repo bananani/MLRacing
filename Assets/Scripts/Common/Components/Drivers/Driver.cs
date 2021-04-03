@@ -9,17 +9,17 @@ namespace Common.Components
     {
         private Car _car;
 
-        private void Start()
+        public void Start()
         {
             _car = GetComponent<Car>();
         }
 
-        private void Update()
+        public void Update()
         {
             DriverUpdate();
         }
 
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
             DriverFixedUpdate();
         }

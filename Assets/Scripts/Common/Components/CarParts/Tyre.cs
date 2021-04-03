@@ -90,7 +90,7 @@ namespace Common.Components.CarParts
 
         private Ray _gripRay => new Ray(transform.position, Vector3.forward * 1000f);
 
-        private void Start()
+        public void Start()
         {
             _trailRenderer = GetComponent<TrailRenderer>();
             _smokeSystem = GetComponent<ParticleSystem>();
@@ -105,9 +105,9 @@ namespace Common.Components.CarParts
             UpdateTyreMass();
         }
 
-        private void Update() => _currentSurface = GetSurface();
+        public void Update() => _currentSurface = GetSurface();
 
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
             Reset();
 
@@ -185,6 +185,14 @@ namespace Common.Components.CarParts
 
         public float GetDriftAngle() => Mathf.Min(_tyreAngleRelativeToForwardsVelocity, _tyreAngleRelativeToBackwardsVelocity);
 
+        public void ForceStop()
+        {
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.angularVelocity = 0;
+        }
+
+        public void SetEffectsEnabled(bool enable) => _trailRenderer.enabled = enable;
+
         private RaycastHit2D[] _tyreRaycastResults;
         private SurfaceMaterial GetSurface()
         {
@@ -223,21 +231,19 @@ namespace Common.Components.CarParts
 
         public TyreDebugData CollectDebugData() =>
             new TyreDebugData(
-                    _relativeVelocity,
-                    (_relativeVelocity - _previousFrameRelativeVelocity) / Time.fixedDeltaTime,
-                    GetSidewaysFriction(),
-                    GetRollingFriction(),
-                    GetBrakingFriction(),
-                    _newtonForceProducedByMassResponsibility,
-                    -1f,
-                    _downforce,
-                    -1f,
-                    _currentSurface?.SurfaceName
-                );
+                _relativeVelocity,
+                (_relativeVelocity - _previousFrameRelativeVelocity) / Time.fixedDeltaTime,
+                GetSidewaysFriction(),
+                GetRollingFriction(),
+                GetBrakingFriction(),
+                _newtonForceProducedByMassResponsibility, -1f,
+                _downforce, -1f,
+                _currentSurface?.SurfaceName
+            );
 
 #if UNITY_EDITOR
         private const float GIZMO_SCALE = 0.005f;
-        private void OnDrawGizmos()
+        public void OnDrawGizmos()
         {
             if(_rigidbody == null || _carData == null)
             {

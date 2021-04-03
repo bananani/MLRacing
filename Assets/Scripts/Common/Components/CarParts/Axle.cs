@@ -64,9 +64,24 @@ namespace Common.Components.CarParts
             _rightTyre.ApplyDownforce(downforce * 0.5f);
         }
 
-        public (TyreDebugData leftTyreDebugData, TyreDebugData rightTyreDebugData) CollectDebugData()
+        public void ForceStopTyres()
         {
-            return (_leftTyre.CollectDebugData(), _rightTyre.CollectDebugData());
+            _leftTyre.ForceStop();
+            _rightTyre.ForceStop();
         }
+
+        public void DisableTyres()
+        {
+            _leftTyre.SetEffectsEnabled(false);
+            _rightTyre.SetEffectsEnabled(false);
+        }
+
+        public void EnableTyres()
+        {
+            _leftTyre.SetEffectsEnabled(true);
+            _rightTyre.SetEffectsEnabled(true);
+        }
+
+        public (TyreDebugData leftTyreDebugData, TyreDebugData rightTyreDebugData) CollectDebugData() => (_leftTyre.CollectDebugData(), _rightTyre.CollectDebugData());
     }
 }

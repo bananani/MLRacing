@@ -1,4 +1,4 @@
-using Common.Attributes;
+using System;
 using Common.Identifiers;
 using UnityEngine;
 
@@ -9,9 +9,7 @@ namespace Common.ScriptableObjects
     {
         [Header("General info")]
         public string CarName;
-        [EnumFlag]
         public DrivetrainIdentifier DrivetrainType;
-        [EnumFlag]
         public SteeringTypeIdentifier SteeringType;
 
         [Header("Weight")]

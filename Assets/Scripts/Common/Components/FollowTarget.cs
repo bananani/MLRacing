@@ -14,12 +14,12 @@ namespace Common.Components
         private Camera _camera;
         private bool _cameraStatic;
 
-        private void Awake()
+        public void Awake()
         {
             _camera = GetComponent<Camera>();
         }
 
-        private void Update()
+        public void Update()
         {
             if(_followTarget == null)
             {

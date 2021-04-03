@@ -29,7 +29,7 @@ namespace Common.ScriptableObjects
         private float _peakFrictionCoefficient = 1.2f;
         [SerializeField, Min(0)]
         private float _peakFrictionVelocity = 1f;
-        
+
         [SerializeField, Space, Range(0f, 1f)]
         private float _peakToLimitSteepness = 0.2f;
 
@@ -37,7 +37,7 @@ namespace Common.ScriptableObjects
         private float _limitFrictionCoefficient = 0.5f;
         [SerializeField, Min(0)]
         private float _limitFrictionMinVelocity = 5f;
-        
+
         [Header("Friction Curve (Read only)")]
         [SerializeField, Space]
         private AnimationCurve _frictionCurve;

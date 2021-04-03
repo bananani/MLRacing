@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
-  m_Name: SandShape
+  m_Name: shape_grass
   m_EditorClassIdentifier: 
   m_Angles:
   - m_Start: -180
@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Order: 0
     m_Sprites:
     - {fileID: 0}
-  m_FillTexture: {fileID: 2800000, guid: 4d23ee02b5a749040a5f6b3a2f21ae7b, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: 56c0ec9861d55284bb6acd530d81c15b, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:

@@ -1,4 +1,5 @@
 ﻿using Common.Constants;
+using Common.DataModels;
 using Common.DataModels.Debug;
 using Common.Identifiers;
 using Common.ScriptableObjects;
@@ -55,18 +56,18 @@ namespace Common.Components.CarParts
 
         private float _currentDriftAngle => Mathf.Min(Vector2.Angle(Vector2.up, _relativeVelocity), Vector2.Angle(Vector2.up, -_relativeVelocity));
 
-        private void Awake()
+        public void Awake()
         {
             Init(_carData);
         }
 
-        private void Update()
+        public void Update()
         {
             CheckExternalCarDataChanges();
             CheckCustomizationDataChanges();
         }
 
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
             _acceleration = (_relativeVelocity - _previousFrameVelocity) / Time.fixedDeltaTime;
             _previousFrameVelocity = _relativeVelocity;
@@ -91,6 +92,7 @@ namespace Common.Components.CarParts
             UpdateCarMassData();
             CarDataChanged += OnCarDataChanged;
             CarDataCustomizationChanged += OnCarCustomizationDataChanged;
+            TrackVariantSelector.InitializationCompleted += OnTrackVariantInitialized;
         }
 
         private void UpdateCarMassData()
@@ -140,8 +142,8 @@ namespace Common.Components.CarParts
         private void CheckCustomizationDataChanges()
         {
             if(_currentBaseColor != _customizationData.BaseColor ||
-            _currentCustomizationColor1 != _customizationData.Customization1 ||
-            _currentCustomizationColor2 != _customizationData.Customization2)
+                _currentCustomizationColor1 != _customizationData.Customization1 ||
+                _currentCustomizationColor2 != _customizationData.Customization2)
             {
                 CarDataCustomizationChanged?.Invoke();
             }
@@ -156,21 +158,45 @@ namespace Common.Components.CarParts
             VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration, _currentDriftAngle);
 
             return new CarDebugData(
-                    velocityDebugData,
-                    engineDebugData,
-                    leftFrontTyreDebugData,
-                    rightFrontTyreDebugData,
-                    leftRearTyreDebugData,
-                    rightRearTyreDebugData,
-                    aeroDebugData
-                );
-            ;
+                velocityDebugData,
+                engineDebugData,
+                leftFrontTyreDebugData,
+                rightFrontTyreDebugData,
+                leftRearTyreDebugData,
+                rightRearTyreDebugData,
+                aeroDebugData
+            );
         }
 
         private void OnCarDataChanged() => UpdateCarMassData();
         private void OnCarCustomizationDataChanged() => UpdateCarCustomizationData();
+        private void OnTrackVariantInitialized(TrackVariant variant) => PlaceOnGrid(variant, 1);
 
-        private void OnDrawGizmos()
+        private void PlaceOnGrid(TrackVariant variant, int position)
+        {
+            Transform gridPos = variant.GetGridPositionTransform(position);
+            if(gridPos == null)
+            {
+                return;
+            }
+
+            _frontAxle.DisableTyres();
+            _rearAxle.DisableTyres();
+
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.angularVelocity = 0f;
+
+            float offsetDistance = (_body.BodyLength / 2f) + 1f;
+            float rotation = gridPos.rotation.eulerAngles.z;
+            Vector2 offset = Vector2Utils.GetRotatedVelocityVector(new Vector2(0f, -offsetDistance), rotation);
+            transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+            transform.position = new Vector2(gridPos.position.x, gridPos.position.y) + offset;
+
+            _frontAxle.EnableTyres();
+            _rearAxle.EnableTyres();
+        }
+
+        public void OnDrawGizmos()
         {
             if(_rigidbody == null)
             {

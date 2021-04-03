@@ -13,10 +13,10 @@ namespace Common.Components.CarParts
         private SpriteRenderer _renderer;
         private Material _carMaterial;
 
-        private float BodyLength => _collider.bounds.size.y + (_collider.edgeRadius * 2);
-        private float BodyWidth => _collider.bounds.size.x + (_collider.edgeRadius * 2);
-        private float BodyWidest => Mathf.Sqrt((BodyLength * BodyLength) + (BodyWidth * BodyWidth));
-        private float AngleAtWidest => Mathf.Asin((BodyLength * Mathf.Sin(90)) / BodyWidest);
+        public float BodyLength => _collider.bounds.size.y + (_collider.edgeRadius * 2);
+        public float BodyWidth => _collider.bounds.size.x + (_collider.edgeRadius * 2);
+        public float BodyWidest => Mathf.Sqrt((BodyLength * BodyLength) + (BodyWidth * BodyWidth));
+        public float AngleAtWidest => Mathf.Asin((BodyLength * Mathf.Sin(90)) / BodyWidest);
 
         [Header("Air resistance")]
         [SerializeField, Min(0)]
@@ -31,7 +31,7 @@ namespace Common.Components.CarParts
 
         public float GetAirResistance(float airVelocity, float driftAngle) => 0.5f * CAero.AIR_DENSITY * (airVelocity * airVelocity) * AirResistanceCoefficient * CalculateBodySurfaceArea(driftAngle, CarHeight);
 
-        private void Awake()
+        public void Awake()
         {
             _collider = GetComponent<BoxCollider2D>();
             _renderer = GetComponent<SpriteRenderer>();

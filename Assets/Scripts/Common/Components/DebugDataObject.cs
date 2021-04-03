@@ -10,7 +10,7 @@ namespace Common.Components
 
         private Driver _driver => GetComponent<Driver>();
 
-        private void Update()
+        public void Update()
         {
             if(_driver == null)
             {

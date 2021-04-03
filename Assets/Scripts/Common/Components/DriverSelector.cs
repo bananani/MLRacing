@@ -14,12 +14,12 @@ namespace Common.Components
         private DriverType _currentDriverType = DriverType.NONE;
         private Driver _currentDriverComponent;
 
-        private void Awake()
+        public void Awake()
         {
             UpdateDriverType();
         }
 
-        private void Update()
+        public void Update()
         {
             if(_currentDriverType != _driverType)
             {

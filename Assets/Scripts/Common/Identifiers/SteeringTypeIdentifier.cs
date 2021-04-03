@@ -1,5 +1,8 @@
+using System;
+
 namespace Common.Identifiers
 {
+    [Flags]
     public enum SteeringTypeIdentifier
     {
         FRONT = 1,

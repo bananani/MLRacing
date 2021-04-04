@@ -1,5 +1,4 @@
 ﻿using Common.Constants;
-using Common.DataModels;
 using Common.DataModels.Debug;
 using Common.Identifiers;
 using Common.ScriptableObjects;
@@ -29,6 +28,8 @@ namespace Common.Components.CarParts
         private Drivetrain _drivetrain = null;
         [SerializeField]
         private Body _body = null;
+
+        private Transponder _transponder;
 
         private Rigidbody2D _rigidbody;
         private Vector2 _currentPosition => new Vector2(transform.position.x, transform.position.y);
@@ -92,7 +93,6 @@ namespace Common.Components.CarParts
             UpdateCarMassData();
             CarDataChanged += OnCarDataChanged;
             CarDataCustomizationChanged += OnCarCustomizationDataChanged;
-            TrackVariantSelector.InitializationCompleted += OnTrackVariantInitialized;
         }
 
         private void UpdateCarMassData()
@@ -101,15 +101,33 @@ namespace Common.Components.CarParts
             _currentBodyMass = _carData.VehicleMass;
         }
 
-        private void UpdateCarCustomizationData()
+        private void UpdateCarCustomizationData() => SetCarCustomizationData(_customizationData);
+
+        private void SetCarCustomizationData(CarCustomizationData customizationData)
         {
-            _body.SetCustomization();
+            _customizationData = customizationData;
+            _body.SetCustomization(_customizationData);
 
             _currentBaseColor = _customizationData.BaseColor;
             _currentCustomizationColor1 = _customizationData.Customization1;
             _currentCustomizationColor2 = _customizationData.Customization2;
         }
 
+        public void SetupCarForDriver(DriverData driverData) => SetCarCustomizationData(driverData.PersonalCarCustomizationSettings);
+        public Transponder SetupTransponder()
+        {
+            if(_transponder == null)
+            {
+                _transponder = GetComponentInChildren<Transponder>();
+                if(_transponder == null)
+                {
+                    _transponder = _body.gameObject.AddComponent<Transponder>();
+                    _transponder.Init();
+                }
+            }
+
+            return _transponder;
+        }
         public void Accelerate(float strength) => _engine.Accelerate(strength);
         public void Brake(float strength) => _frontAxle.Brake(strength);
         public void Handbrake(float strength) => _rearAxle.Brake(strength);
@@ -170,12 +188,10 @@ namespace Common.Components.CarParts
 
         private void OnCarDataChanged() => UpdateCarMassData();
         private void OnCarCustomizationDataChanged() => UpdateCarCustomizationData();
-        private void OnTrackVariantInitialized(TrackVariant variant) => PlaceOnGrid(variant, 1);
 
-        private void PlaceOnGrid(TrackVariant variant, int position)
+        public void PlaceOnGrid(Transform gridPlacement)
         {
-            Transform gridPos = variant.GetGridPositionTransform(position);
-            if(gridPos == null)
+            if(gridPlacement == null)
             {
                 return;
             }
@@ -187,10 +203,10 @@ namespace Common.Components.CarParts
             _rigidbody.angularVelocity = 0f;
 
             float offsetDistance = (_body.BodyLength / 2f) + 1f;
-            float rotation = gridPos.rotation.eulerAngles.z;
+            float rotation = gridPlacement.rotation.eulerAngles.z;
             Vector2 offset = Vector2Utils.GetRotatedVelocityVector(new Vector2(0f, -offsetDistance), rotation);
             transform.rotation = Quaternion.Euler(0f, 0f, rotation);
-            transform.position = new Vector2(gridPos.position.x, gridPos.position.y) + offset;
+            transform.position = new Vector2(gridPlacement.position.x, gridPlacement.position.y) + offset;
 
             _frontAxle.EnableTyres();
             _rearAxle.EnableTyres();

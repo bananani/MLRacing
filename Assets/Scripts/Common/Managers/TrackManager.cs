@@ -1,28 +1,29 @@
 using System.Collections.Generic;
+using Common.Components.TrackParts;
 using Common.DataModels;
 using UnityEngine;
 
-namespace Common.Components
+namespace Common.Managers
 {
-    public class TrackVariantSelector : MonoBehaviour
+    public class TrackManager : MonoBehaviour
     {
         public delegate void TrackVariantEvent(TrackVariant variant);
-        public static event TrackVariantEvent InitializationCompleted;
+        public event TrackVariantEvent InitializationCompleted;
 
         [SerializeField]
         private int _selectedTrackVariant;
         [SerializeField]
         private TrackVariant[] _trackVariants = new TrackVariant[0];
 
-        private Dictionary<int, TrackVariant> _trackVariantLookup = new Dictionary<int, TrackVariant>();
+        private readonly Dictionary<int, TrackVariant> _trackVariantLookup = new Dictionary<int, TrackVariant>();
+        private readonly Dictionary<int, Checkpoint> _checkpointLookup = new Dictionary<int, Checkpoint>();
 
         private int _currentTrackVariant = -1;
 
-        public void Awake()
-        {
-            IndexTrackVariantInformation();
-            InitializeTrackVariant(_selectedTrackVariant);
-        }
+        public TrackVariant CurrentTrackVariant => _trackVariantLookup[_currentTrackVariant];
+        public int CheckpointCount => _checkpointLookup.Count;
+
+        public void Awake() => InitializeTrackVariant(_selectedTrackVariant);
 
         public void OnValidate()
         {
@@ -65,6 +66,7 @@ namespace Common.Components
                 return;
             }
 
+            IndexTrackVariantInformation();
             if(!_trackVariantLookup.TryGetValue(variantId, out TrackVariant variant))
             {
                 // Variant not valid
@@ -72,14 +74,55 @@ namespace Common.Components
             }
 
             DisableAllVariantObstacles();
+            DisableAllVariantCheckpoints();
             SetVariantObstaclesEnabled(variant, true);
+            SetVariantCheckpointsEnabled(variant, true);
+
+            _checkpointLookup.Clear();
+
+            for(int i = 0; i < variant.Checkpoints.Length; i++)
+            {
+                variant.Checkpoints[i].Init(i, i == variant.Checkpoints.Length - 1);
+                _checkpointLookup.Add(i, variant.Checkpoints[i]);
+            }
+
             _currentTrackVariant = variantId;
             InitializationCompleted?.Invoke(variant);
+        }
+
+        public bool GetNextCheckpoint(Checkpoint checkpoint, out Checkpoint nextCheckpoint)
+        {
+            if(_checkpointLookup.TryGetValue(checkpoint.CheckpointIndex + 1, out nextCheckpoint))
+            {
+                // Still on the same lap
+                return false;
+            }
+
+            if(_checkpointLookup.TryGetValue(0, out nextCheckpoint))
+            {
+                // Next lap started
+                return true;
+            }
+
+            return false;
         }
 
         public void SetVariantObstaclesEnabled(TrackVariant variant, bool enable)
         {
             foreach(Transform t in variant.ObstacleGroups)
+            {
+                if(t?.gameObject == null)
+                {
+                    return;
+                }
+
+                t.gameObject.SetActive(enable);
+            }
+        }
+
+        public void SetVariantCheckpointsEnabled(TrackVariant variant, bool enable)
+        {
+            foreach(Checkpoint t in variant.Checkpoints)
             {
                 if(t?.gameObject == null)
                 {
@@ -98,6 +141,14 @@ namespace Common.Components
             }
         }
 
+        public void DisableAllVariantCheckpoints()
+        {
+            foreach(TrackVariant variant in _trackVariantLookup.Values)
+            {
+                SetVariantCheckpointsEnabled(variant, false);
+            }
+        }
+
         private void IndexTrackVariantInformation()
         {
             _trackVariantLookup.Clear();
@@ -105,7 +156,7 @@ namespace Common.Components
             {
                 if(_trackVariantLookup.ContainsKey(variant.Id))
                 {
-                    Debug.LogWarning($"TrackVariant ID conflict: {variant.Id}. Some variants are unavailable");
+                    UnityEngine.Debug.LogWarning($"TrackVariant ID conflict: {variant.Id}. Some variants are unavailable");
                     continue;
                 }
 

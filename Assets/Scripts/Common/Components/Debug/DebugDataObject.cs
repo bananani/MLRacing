@@ -1,7 +1,8 @@
-﻿using Common.DataModels.Debug;
+﻿using Common.Components.Drivers;
+using Common.DataModels.Debug;
 using UnityEngine;
 
-namespace Common.Components
+namespace Common.Components.Debug
 {
     public class DebugDataObject : MonoBehaviour
     {

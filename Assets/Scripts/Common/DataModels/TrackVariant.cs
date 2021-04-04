@@ -1,4 +1,5 @@
 using System;
+using Common.Components.TrackParts;
 using UnityEngine;
 
 namespace Common.DataModels
@@ -9,13 +10,14 @@ namespace Common.DataModels
         public int Id;
         public Transform[] ObstacleGroups;
         public Transform[] StartingGrid;
-        // Checkpoints
+        public Checkpoint[] Checkpoints;
 
-        public TrackVariant(int id, Transform[] obstacleGroups, Transform[] startingGrid)
+        public TrackVariant(int id, Transform[] obstacleGroups, Transform[] startingGrid, Checkpoint[] checkpoints)
         {
             Id = id;
             ObstacleGroups = obstacleGroups;
             StartingGrid = startingGrid;
+            Checkpoints = checkpoints;
         }
     }
 

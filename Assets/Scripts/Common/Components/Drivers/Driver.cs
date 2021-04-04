@@ -1,28 +1,33 @@
 using Common.Components.CarParts;
 using Common.DataModels.Debug;
+using Common.ScriptableObjects;
 using UnityEngine;
 
-namespace Common.Components
+namespace Common.Components.Drivers
 {
     [RequireComponent(typeof(Car))]
     public abstract class Driver : MonoBehaviour
     {
+        [SerializeField]
+        private DriverData _driverData;
+        [SerializeField]
         private Car _car;
 
-        public void Start()
+        public void OnValidate() => GetComponentReferences();
+        public void Start() => GetComponentReferences();
+        public void Update() => DriverUpdate();
+        public void FixedUpdate() => DriverFixedUpdate();
+
+        private void GetComponentReferences()
         {
-            _car = GetComponent<Car>();
+            if(_car == null)
+            {
+                _car = GetComponent<Car>();
+            }
         }
 
-        public void Update()
-        {
-            DriverUpdate();
-        }
-
-        public void FixedUpdate()
-        {
-            DriverFixedUpdate();
-        }
+        public void SetupDriver() => SetupDriver(_driverData);
+        public void SetupDriver(DriverData driverData) => _driverData = driverData;
 
         protected abstract void DriverUpdate();
         protected abstract void DriverFixedUpdate();

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2101622664}
   - component: {fileID: 7771315509419413328}
   - component: {fileID: 3236032697570601483}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TyreFL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: a408dbbb214f0ca428c544a1cedcece0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -136,7 +136,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -1.05, y: 1.6}
+  m_ConnectedAnchor: {x: -1.0500002, y: 1.5999998}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -185,7 +185,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 98
   m_Time: 4
   m_Parameters:
     serializedVersion: 3
@@ -5010,7 +5010,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 101
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -5046,7 +5046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6416943039057933031}
   - component: {fileID: 6416943039057933028}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Engine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5180,7 +5180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6416943039201361789}
   - component: {fileID: 6416943039201361788}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AxleFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5233,7 +5233,7 @@ GameObject:
   - component: {fileID: 611530434}
   - component: {fileID: 1705135653183152230}
   - component: {fileID: 6143976472513107569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TyreRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5314,7 +5314,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: a408dbbb214f0ca428c544a1cedcece0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -5353,7 +5353,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -1.05, y: -1.6}
+  m_ConnectedAnchor: {x: -1.0500002, y: -1.6000006}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -5402,7 +5402,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 98
   m_Time: 4
   m_Parameters:
     serializedVersion: 3
@@ -5509,7 +5509,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 101
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -10269,7 +10269,7 @@ GameObject:
   - component: {fileID: 850341971}
   - component: {fileID: 9067004743913013027}
   - component: {fileID: 6963154949650094181}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TyreFR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10350,7 +10350,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: a408dbbb214f0ca428c544a1cedcece0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -10389,7 +10389,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 1.05, y: 1.6}
+  m_ConnectedAnchor: {x: 1.0500002, y: 1.6000006}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -10438,7 +10438,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 98
   m_Time: 4
   m_Parameters:
     serializedVersion: 3
@@ -10545,7 +10545,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 101
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -15299,7 +15299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6416943039584056369}
   - component: {fileID: 6416943039584056368}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AxleRear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15346,7 +15346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6416943039786436849}
   - component: {fileID: 6416943039786436814}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Drivetrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15395,7 +15395,7 @@ GameObject:
   - component: {fileID: 764629355}
   - component: {fileID: 7579088498392719174}
   - component: {fileID: 2930412474470171172}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TyreRR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15476,7 +15476,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: a408dbbb214f0ca428c544a1cedcece0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -15515,7 +15515,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 1.05, y: -1.6}
+  m_ConnectedAnchor: {x: 1.0500002, y: -1.6000007}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -15564,7 +15564,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 98
   m_Time: 4
   m_Parameters:
     serializedVersion: 3
@@ -15671,7 +15671,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 101
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -20427,7 +20427,8 @@ GameObject:
   - component: {fileID: 5426718112818900320}
   - component: {fileID: 7876288743883382182}
   - component: {fileID: 4247819312516155986}
-  m_Layer: 0
+  - component: {fileID: 2178801113587348274}
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20460,7 +20461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a27e46b115326498e297f95efa673d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarHeight: 2
+  CarHeight: 1.5
   AirResistanceCoefficient: 0.24
 --- !u!212 &7876288743883382182
 SpriteRenderer:
@@ -20501,7 +20502,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 9ae5bd1ae23361d49a0a6651803657c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -20539,3 +20540,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 3.6}
   m_EdgeRadius: 0.5
+--- !u!114 &2178801113587348274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7303192724642897195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72229a7bb13fd6f4e93e7a7014e8efe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 4247819312516155986}

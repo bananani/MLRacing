@@ -38,22 +38,22 @@ namespace Common.Components.CarParts
             _carMaterial = _renderer.material;
         }
 
-        public void Init(CarCustomizationData customizationData)
+        public void Init(CarCustomizationData customizationData) => SetCustomization(customizationData);
+
+        public void SetCustomization() => SetCustomization(_customizationData);
+
+        public void SetCustomization(CarCustomizationData customizationData)
         {
             _customizationData = customizationData;
-            SetCustomization();
-        }
 
-        public void SetCustomization()
-        {
             _carMaterial.SetColor("_CustomizationColorR", _customizationData.BaseColor);
             _carMaterial.SetColor("_CustomizationColorG", _customizationData.Customization1);
             _carMaterial.SetColor("_CustomizationColorB", _customizationData.Customization2);
         }
 
-        private void OnCollisionEnter2D(Collision2D collider)
+        public void OnCollisionEnter2D(Collision2D collider)
         {
-            Debug.Log("Look where you're going, nutter!");
+            UnityEngine.Debug.Log("Look where you're going, nutter!");
         }
     }
 }

@@ -1,13 +1,15 @@
+using System;
 using Common.Components.CarParts;
 using Common.ScriptableObjects;
 using UnityEngine;
 
 namespace Common.DataModels
 {
-    public readonly struct RaceEntrant
+    [Serializable]
+    public class RaceEntrant
     {
-        public DriverData Driver { get; }
-        public Car Car { get; }
+        public DriverData Driver;
+        public Car Car;
 
         public RaceEntrant(DriverData driverData, Car car)
         {

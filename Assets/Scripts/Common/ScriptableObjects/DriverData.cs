@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Common.ScriptableObjects
 {
-    [CreateAssetMenu(menuName = "ScriptableObjects/BodyKitData")]
+    [CreateAssetMenu(menuName = "ScriptableObjects/DriverData")]
     public class DriverData : ScriptableObject
     {
         [Header("Driver info")]

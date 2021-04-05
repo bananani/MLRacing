@@ -31,20 +31,30 @@ namespace Common.Components.CarParts
 
         public float GetAirResistance(float airVelocity, float driftAngle) => 0.5f * CAero.AIR_DENSITY * (airVelocity * airVelocity) * AirResistanceCoefficient * CalculateBodySurfaceArea(driftAngle, CarHeight);
 
-        public void Awake()
+        public void Init(CarCustomizationData customizationData)
         {
             _collider = GetComponent<BoxCollider2D>();
             _renderer = GetComponent<SpriteRenderer>();
             _carMaterial = _renderer.material;
-        }
 
-        public void Init(CarCustomizationData customizationData) => SetCustomization(customizationData);
+            SetCustomization(customizationData);
+        }
 
         public void SetCustomization() => SetCustomization(_customizationData);
 
         public void SetCustomization(CarCustomizationData customizationData)
         {
             _customizationData = customizationData;
+
+            if(_carMaterial == null)
+            {
+                if(_renderer == null)
+                {
+                    _renderer = GetComponent<SpriteRenderer>();
+                }
+
+                _carMaterial = _renderer.material;
+            }
 
             _carMaterial.SetColor("_CustomizationColorR", _customizationData.BaseColor);
             _carMaterial.SetColor("_CustomizationColorG", _customizationData.Customization1);

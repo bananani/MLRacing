@@ -18,12 +18,11 @@ namespace Common.Managers
         private readonly Dictionary<int, TrackVariant> _trackVariantLookup = new Dictionary<int, TrackVariant>();
         private readonly Dictionary<int, Checkpoint> _checkpointLookup = new Dictionary<int, Checkpoint>();
 
-        private int _currentTrackVariant = -1;
+        public int SelectedTrackVariant => _selectedTrackVariant;
+        public int CurrentTrackVariantId { get; private set; } = -1;
 
-        public TrackVariant CurrentTrackVariant => _trackVariantLookup[_currentTrackVariant];
+        public TrackVariant CurrentTrackVariant => _trackVariantLookup[CurrentTrackVariantId];
         public int CheckpointCount => _checkpointLookup.Count;
-
-        public void Awake() => InitializeTrackVariant(_selectedTrackVariant);
 
         public void OnValidate()
         {
@@ -50,17 +49,9 @@ namespace Common.Managers
             _selectedTrackVariant = firstVariant;
         }
 
-        public void Update()
-        {
-            if(_selectedTrackVariant != _currentTrackVariant)
-            {
-                InitializeTrackVariant(_selectedTrackVariant);
-            }
-        }
-
         public void InitializeTrackVariant(int variantId)
         {
-            if(_currentTrackVariant == variantId)
+            if(CurrentTrackVariantId == variantId)
             {
                 // Already initialized
                 return;
@@ -86,7 +77,7 @@ namespace Common.Managers
                 _checkpointLookup.Add(i, variant.Checkpoints[i]);
             }
 
-            _currentTrackVariant = variantId;
+            CurrentTrackVariantId = variantId;
             InitializationCompleted?.Invoke(variant);
         }
 

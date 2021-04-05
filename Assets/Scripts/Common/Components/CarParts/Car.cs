@@ -77,6 +77,8 @@ namespace Common.Components.CarParts
             ApplyAirResistance();
         }
 
+        public void Init() => Init(_carData);
+
         private void Init(CarData carData)
         {
             carData.FrontTyres.InitFrictionCurve();
@@ -122,10 +124,10 @@ namespace Common.Components.CarParts
                 if(_transponder == null)
                 {
                     _transponder = _body.gameObject.AddComponent<Transponder>();
-                    _transponder.Init();
                 }
             }
 
+            _transponder.Init();
             return _transponder;
         }
         public void Accelerate(float strength) => _engine.Accelerate(strength);

@@ -17,8 +17,6 @@ namespace Common.Components.TrackParts
         public int CheckpointIndex { get; private set; }
         public bool IsFinishLine { get; private set; }
 
-        public void Awake() => CheckpointReport += (check, trans, severity) => UnityEngine.Debug.Log($"Checkpoint detected: #{check.CheckpointIndex}, Finish line: {check.IsFinishLine}, InfractionSeverity: {severity}");
-
         public void OnValidate()
         {
             if(_trackSensor == null)

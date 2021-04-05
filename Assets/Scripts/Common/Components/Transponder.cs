@@ -1,3 +1,4 @@
+using System;
 using Common.Interfaces;
 using Common.ScriptableObjects;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace Common.Components
 
         public float CurrentTime => Time.time;
 
+        private Guid _transponderId;
+        public Guid TransponderId => _transponderId;
+
         public void OnValidate()
         {
             if(_collider == null)
@@ -25,7 +29,6 @@ namespace Common.Components
             }
         }
 
-        public void Awake() => Init();
         public void Init()
         {
             _checkpointLayer = LayerMask.NameToLayer("Checkpoint");
@@ -33,6 +36,8 @@ namespace Common.Components
             {
                 _collider = GetComponent<Collider2D>();
             }
+
+            _transponderId = Guid.NewGuid();
         }
 
         public void OnTriggerEnter2D(Collider2D other)

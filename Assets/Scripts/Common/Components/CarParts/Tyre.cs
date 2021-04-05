@@ -90,16 +90,13 @@ namespace Common.Components.CarParts
 
         private Ray _gripRay => new Ray(transform.position, Vector3.forward * 1000f);
 
-        public void Start()
+        public void Init(CarData carData, TyrePositionIdentifier tyrePosition)
         {
             _trailRenderer = GetComponent<TrailRenderer>();
             _smokeSystem = GetComponent<ParticleSystem>();
             _emissionModule = _smokeSystem.emission;
             _originalPosition = transform.localPosition;
-        }
 
-        public void Init(CarData carData, TyrePositionIdentifier tyrePosition)
-        {
             _carData = carData;
             _tyrePosition = tyrePosition;
             UpdateTyreMass();

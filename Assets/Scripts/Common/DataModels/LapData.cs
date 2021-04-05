@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,8 @@ namespace Common.DataModels
         private float currentLapStartTime;
 
         public readonly Dictionary<int, (float time, bool valid)> LapTimes = new Dictionary<int, (float, bool)>();
+
+        public float FastestLap => LapTimes.Values.Min(l => l.time);
 
         public void StartRaceTimer(float startTime) => raceStartTime = startTime;
         public void StartLapTimer(float startTime) => currentLapStartTime = startTime;

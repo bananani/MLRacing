@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Common.Components;
 using Common.Components.TrackParts;
 using Common.DataModels;
@@ -123,6 +124,13 @@ namespace Common.Managers
             }
 
             // Race over
+            StringBuilder standingsString = new StringBuilder();
+            for(int i = 0; i < _finishedDrivers.Count; i++)
+            {
+                standingsString.AppendLine($"{i + 1} : {_finishedDrivers[i].entrant.Driver.Name} (Fastest lap: {_finishedDrivers[i].lapData.FastestLap})");
+            }
+
+            Debug.Log($"Race is over!\n{standingsString}");
             RaceEnded?.Invoke();
         }
     }

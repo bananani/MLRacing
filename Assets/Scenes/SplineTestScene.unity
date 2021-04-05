@@ -3451,10 +3451,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: National_Oval
       objectReference: {fileID: 0}
-    - target: {fileID: 8893454352540974033, guid: 14f61a4c737b7384f9aff9e9b2d7b17b,
-        type: 3}
-      propertyPath: _selectedTrackVariant
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14f61a4c737b7384f9aff9e9b2d7b17b, type: 3}

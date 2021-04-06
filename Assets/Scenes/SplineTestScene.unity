@@ -1147,6 +1147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98434dac1ba919a4cb9fc0654b8fb911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _laps: 3
   _currentTrack: {fileID: 994689274}
   _entrants:
   - Driver: {fileID: 11400000, guid: 1c3aae44f56beec4caadcfbe625e11b9, type: 2}

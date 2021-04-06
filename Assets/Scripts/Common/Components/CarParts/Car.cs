@@ -44,18 +44,18 @@ namespace Common.Components.CarParts
         public float CurrentVelocityInMetersPerSecond => _rigidbody.velocity.magnitude;
         public float CurrentVelocityInKilometersPerHour => CurrentVelocityInMetersPerSecond * CVelocity.MS_TO_KMH_CONVERSION;
 
-        public float CurrentForwardsVelocityInMetersPerSecond => _relativeVelocity.y;
+        public float CurrentForwardsVelocityInMetersPerSecond => RelativeVelocity.y;
         public float CurrentForwardVelocityInKilometersPerHour => CurrentForwardsVelocityInMetersPerSecond * CVelocity.MS_TO_KMH_CONVERSION;
 
         public Vector3 CurrentPosition => _body.transform.position;
         public float CurrentVelocityDirection => Vector2.SignedAngle(Vector2.up, _rigidbody.velocity.normalized);
         public float CurrentVehicleRotation => transform.rotation.eulerAngles.z;
 
-        private Vector2 _relativeVelocity => Vector2Utils.GetRotatedVelocityVector(_rigidbody.velocity, -transform.rotation.eulerAngles.z);
-        private Vector2 _acceleration;
+        public Vector2 RelativeVelocity => Vector2Utils.GetRotatedVelocityVector(_rigidbody.velocity, -transform.rotation.eulerAngles.z);
+        public Vector2 Acceleration { get; private set; }
         private Vector2 _previousFrameVelocity;
 
-        private float _currentDriftAngle => Mathf.Min(Vector2.Angle(Vector2.up, _relativeVelocity), Vector2.Angle(Vector2.up, -_relativeVelocity));
+        private float _currentDriftAngle => Mathf.Min(Vector2.Angle(Vector2.up, RelativeVelocity), Vector2.Angle(Vector2.up, -RelativeVelocity));
 
         public void Awake()
         {
@@ -70,8 +70,8 @@ namespace Common.Components.CarParts
 
         public void FixedUpdate()
         {
-            _acceleration = (_relativeVelocity - _previousFrameVelocity) / Time.fixedDeltaTime;
-            _previousFrameVelocity = _relativeVelocity;
+            Acceleration = (RelativeVelocity - _previousFrameVelocity) / Time.fixedDeltaTime;
+            _previousFrameVelocity = RelativeVelocity;
 
             ApplyDownforce();
             ApplyAirResistance();
@@ -127,7 +127,7 @@ namespace Common.Components.CarParts
                 }
             }
 
-            _transponder.Init();
+            _transponder.Init(this);
             return _transponder;
         }
         public void Accelerate(float strength) => _engine.Accelerate(strength);
@@ -175,7 +175,7 @@ namespace Common.Components.CarParts
             (TyreDebugData leftRearTyreDebugData, TyreDebugData rightRearTyreDebugData) = _rearAxle.CollectDebugData();
             AeroDebugData aeroDebugData = new AeroDebugData(_frontAxle.CurrentDownforce, _rearAxle.CurrentDownforce, _body.GetAirResistance(CurrentVelocityInMetersPerSecond, _currentDriftAngle));
             EngineDebugData engineDebugData = _engine.CollectDebugData();
-            VelocityDebugData velocityDebugData = new VelocityDebugData(_relativeVelocity, _acceleration, _currentDriftAngle);
+            VelocityDebugData velocityDebugData = new VelocityDebugData(RelativeVelocity, Acceleration, _currentDriftAngle);
 
             return new CarDebugData(
                 velocityDebugData,

@@ -1,6 +1,6 @@
 using System.Linq;
-using System;
 using System.Collections.Generic;
+using Common.Identifiers;
 
 namespace Common.DataModels
 {
@@ -10,6 +10,8 @@ namespace Common.DataModels
         public int CurrentLap { get; private set; }
 
         public readonly HashSet<int> PassedCheckpoints = new HashSet<int>();
+        public readonly Dictionary<int, List<InfractionData>> InfractionsByLap = new Dictionary<int, List<InfractionData>>();
+        public int TotalInfractions => InfractionsByLap.Sum(kvp => kvp.Value.Count);
 
         private float raceStartTime;
         private float raceEndTime;
@@ -17,7 +19,8 @@ namespace Common.DataModels
 
         public readonly Dictionary<int, (float time, bool valid)> LapTimes = new Dictionary<int, (float, bool)>();
 
-        public float FastestLap => LapTimes.Values.Min(l => l.time);
+        public int ValidLapCount => LapTimes.Count(kvp => kvp.Value.valid);
+        public float FastestLap => LapTimes.Values.Min(l => l.valid ? l.time : float.MaxValue);
 
         public void StartRaceTimer(float startTime) => raceStartTime = startTime;
         public void StartLapTimer(float startTime) => currentLapStartTime = startTime;
@@ -34,39 +37,78 @@ namespace Common.DataModels
             return null;
         }
 
-        public void CheckpointPassed(int index)
+        public void CheckpointPassed(int index, InfractionData infraction)
         {
-            LatestCheckpoint = index + 1;
-            PassedCheckpoints.Add(LatestCheckpoint);
-        }
-
-        public bool TryCompleteLap(int checkpointAmount, float lapEndTime, bool countInvalidLap, out int lapCount)
-        {
-            bool lapIsValid = IsLapValid(checkpointAmount);
-
-            if(lapIsValid || countInvalidLap)
+            if(infraction.Severity == InfractionSeverityIdentifier.OnTrack)
             {
-                LapTimes.Add(CurrentLap, (lapEndTime - currentLapStartTime, lapIsValid));
-                CurrentLap++;
-                StartLapTimer(lapEndTime);
-                PassedCheckpoints.Clear();
+                LatestCheckpoint = index + 1;
+                PassedCheckpoints.Add(LatestCheckpoint);
+                return;
             }
 
-            lapCount = CurrentLap;
-            return lapIsValid;
+            if(!InfractionsByLap.ContainsKey(CurrentLap))
+            {
+                InfractionsByLap.Add(CurrentLap, new List<InfractionData>());
+            }
+
+            InfractionsByLap[CurrentLap].Add(infraction);
         }
 
-        public bool IsLapValid(int checkpointAmount)
+        public bool TryCompleteLap(int checkpointAmount, float lapEndTime, out int lapCount)
         {
+            bool lapIsValid = IsLapValid(checkpointAmount, out bool lapComplete);
+
+            if(!lapComplete)
+            {
+                lapCount = ValidLapCount;
+                return false;
+            }
+
+            LapTimes.Add(CurrentLap, (lapEndTime - currentLapStartTime, lapIsValid));
+            CurrentLap++;
+            StartLapTimer(lapEndTime);
+            PassedCheckpoints.Clear();
+
+            lapCount = ValidLapCount;
+            return lapComplete;
+        }
+
+        public bool IsLapValid(int checkpointAmount, out bool lapComplete)
+        {
+            lapComplete = false;
             int sumOfCheckpointIds = (checkpointAmount * (checkpointAmount + 1)) / 2;
 
-            int sumOfPassedCheckpointIndexes = 0;
+            // Passed valid checkpoints
+            HashSet<int> passedCheckpoints = new HashSet<int>();
             foreach(int index in PassedCheckpoints)
             {
-                sumOfPassedCheckpointIndexes += index;
+                passedCheckpoints.Add(index);
             }
 
-            return sumOfCheckpointIds == sumOfPassedCheckpointIndexes;
+            if(sumOfCheckpointIds == passedCheckpoints.Sum())
+            {
+                lapComplete = true;
+                return true;
+            }
+
+            if(!InfractionsByLap.ContainsKey(CurrentLap))
+            {
+                return false;
+            }
+
+            // Infractions
+            foreach(InfractionData infraction in InfractionsByLap[CurrentLap])
+            {
+                passedCheckpoints.Add(infraction.CheckpointIndex);
+            }
+
+            if(sumOfCheckpointIds == passedCheckpoints.Sum())
+            {
+                lapComplete = true;
+                return false;
+            }
+
+            return false;
         }
     }
 }

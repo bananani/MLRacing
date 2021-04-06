@@ -61,9 +61,9 @@ namespace Common.UserInterface
 
         private void SetAeroDataLabels(AeroDebugData aero)
         {
-            _frontAeroDownforceLabel?.SetText($"Downforce Front: {aero.FrontSplitterDownforce}");
-            _rearAeroDownforceLabel?.SetText($"Downforce Rear: {aero.RearWingDownforce}");
-            _airResistanceLabel?.SetText($"AirResistance: {aero.CurrentAirResistance}");
+            _frontAeroDownforceLabel?.SetText($"Downforce Front: {aero.FrontSplitterDownforce:0.000} N");
+            _rearAeroDownforceLabel?.SetText($"Downforce Rear: {aero.RearWingDownforce:0.000} N");
+            _airResistanceLabel?.SetText($"AirResistance: {aero.CurrentAirResistance:0.000}");
         }
 
         private void SetTyreDataLabels(TyreDebugDataContainer container, TyreDebugData data)
@@ -71,12 +71,12 @@ namespace Common.UserInterface
             container?.SurfaceLabel?.SetText($"Surfc: {data.Surface}");
             container?.AccelerationForceLabel?.SetText($"Accel: {data.AccelerationForce}");
             container?.CurrentVelocityLabel?.SetText($"CVel: {data.CurrentRelativeVelocity}");
-            container?.SidewaysFrictionLabel?.SetText($"SideF: {data.SidewaysFriction.x} N");
-            container?.RollingFrictionLabel?.SetText($"RollF: {data.RollingFriction.y} N");
-            container?.BrakingFrictionLabel?.SetText($"StopF: {data.BrakingFriction.y} N");
+            container?.SidewaysFrictionLabel?.SetText($"SideF: {data.SidewaysFriction.x:0.000} N");
+            container?.RollingFrictionLabel?.SetText($"RollF: {data.RollingFriction.y:0.000} N");
+            container?.BrakingFrictionLabel?.SetText($"StopF: {data.BrakingFriction.y:0.###} N");
             container?.MassResponsibilityLabel?.SetText($"MassR: {data.MassResponsibility} N");
             container?.EffectiveGripLabel?.SetText($"EGrip: {data.EffectiveGrip}");
-            container?.DownforceLabel?.SetText($"DownF: {data.Downforce}");
+            container?.DownforceLabel?.SetText($"DownF: {data.Downforce:0.000} N");
             container?.TotalGripLabel?.SetText($"Total: {data.TotalGrip}");
         }
     }

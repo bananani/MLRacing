@@ -18,13 +18,7 @@ namespace Common.Components.Drivers
         public void Update() => DriverUpdate();
         public void FixedUpdate() => DriverFixedUpdate();
 
-        private void GetComponentReferences()
-        {
-            if(_car == null)
-            {
-                _car = GetComponent<Car>();
-            }
-        }
+        private void GetComponentReferences() => _car ??= GetComponent<Car>();
 
         public void SetupDriver() => SetupDriver(_driverData);
         public void SetupDriver(DriverData driverData) => _driverData = driverData;

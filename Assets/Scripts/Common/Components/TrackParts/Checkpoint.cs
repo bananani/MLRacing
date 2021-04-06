@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Common.Components.TrackParts
 {
-    public delegate void CheckpointEvent(Checkpoint checkpoint, Transponder transponder, OffTrackSeverityIdentifier infractionSeverity);
+    public delegate void CheckpointEvent(Checkpoint checkpoint, Transponder transponder, InfractionSeverityIdentifier infractionSeverity);
     public class Checkpoint : MonoBehaviour
     {
         public event CheckpointEvent CheckpointReport;
@@ -42,8 +42,8 @@ namespace Common.Components.TrackParts
             }
         }
 
-        public void DriverReportedOnTrack(Transponder transponder) => CheckpointReport?.Invoke(this, transponder, OffTrackSeverityIdentifier.OnTrack);
+        public void DriverReportedOnTrack(Transponder transponder) => CheckpointReport?.Invoke(this, transponder, InfractionSeverityIdentifier.OnTrack);
 
-        public void DriverReportedOffTrack(Transponder transponder, OffTrackSeverityIdentifier infractionSeverity) => CheckpointReport?.Invoke(this, transponder, infractionSeverity);
+        public void DriverReportedOffTrack(Transponder transponder, InfractionSeverityIdentifier infractionSeverity) => CheckpointReport?.Invoke(this, transponder, infractionSeverity);
     }
 }

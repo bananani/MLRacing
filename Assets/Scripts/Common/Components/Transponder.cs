@@ -1,4 +1,5 @@
 using System;
+using Common.Components.CarParts;
 using Common.Interfaces;
 using Common.ScriptableObjects;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Common.Components
 
         [SerializeField]
         private Collider2D _collider;
+
+        private Car _car;
 
         private int _checkpointLayer = 0;
 
@@ -29,7 +32,7 @@ namespace Common.Components
             }
         }
 
-        public void Init()
+        public void Init(Car car)
         {
             _checkpointLayer = LayerMask.NameToLayer("Checkpoint");
             if(_collider == null)
@@ -37,8 +40,12 @@ namespace Common.Components
                 _collider = GetComponent<Collider2D>();
             }
 
+            _car = car;
             _transponderId = Guid.NewGuid();
         }
+
+        public float GetCarSpeed() => _car.RelativeVelocity.magnitude;
+        public float GetCarAcceleration() => _car.Acceleration.magnitude;
 
         public void OnTriggerEnter2D(Collider2D other)
         {

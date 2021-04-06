@@ -1,6 +1,6 @@
 namespace Common.Identifiers
 {
-    public enum OffTrackSeverityIdentifier
+    public enum InfractionSeverityIdentifier
     {
         OnTrack = 0,
         Minor = 1,

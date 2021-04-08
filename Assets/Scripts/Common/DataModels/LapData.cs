@@ -10,20 +10,62 @@ namespace Common.DataModels
         public int CurrentLap { get; private set; }
 
         public readonly HashSet<int> PassedCheckpoints = new HashSet<int>();
+        public readonly Dictionary<int, Dictionary<int, float>> SectorTimesBylap = new Dictionary<int, Dictionary<int, float>>();
         public readonly Dictionary<int, List<InfractionData>> InfractionsByLap = new Dictionary<int, List<InfractionData>>();
         public int TotalInfractions => InfractionsByLap.Sum(kvp => kvp.Value.Count);
 
         private float _raceStartTime;
         private float _raceEndTime;
         private float _currentLapStartTime;
+        private float _previousSectorTime;
         private bool _currentLapInvalid;
 
         public readonly Dictionary<int, (float time, bool valid)> LapTimes = new Dictionary<int, (float, bool)>();
 
 
         public float FastestLap => LapTimes.Values.Min(l => l.valid ? l.time : float.MaxValue);
+        public Dictionary<int, float> GetFastestSectors()
+        {
+            HashSet<int> validLaps = new HashSet<int>();
+            foreach(KeyValuePair<int, (float time, bool valid)> kvp in LapTimes)
+            {
+                if(kvp.Value.valid)
+                {
+                    validLaps.Add(kvp.Key);
+                }
+            }
 
-        public void StartRaceTimer(float startTime) => _raceStartTime = startTime;
+            Dictionary<int, float> fastestSectors = new Dictionary<int, float>();
+            foreach(KeyValuePair<int, Dictionary<int, float>> kvp in SectorTimesBylap)
+            {
+                if(!validLaps.Contains(kvp.Key))
+                {
+                    continue;
+                }
+
+                foreach(KeyValuePair<int, float> sector in kvp.Value)
+                {
+                    if(!fastestSectors.ContainsKey(sector.Key))
+                    {
+                        fastestSectors.Add(sector.Key, sector.Value);
+                        continue;
+                    }
+
+                    if(fastestSectors[sector.Key] < sector.Value)
+                    {
+                        continue;
+                    }
+
+                    fastestSectors[sector.Key] = sector.Value;
+                }
+            }
+
+            return fastestSectors;
+        }
+
+        public float TheoreticalFastestLap => GetFastestSectors().Sum(kvp => kvp.Value);
+
+        public void StartRaceTimer(float startTime) { _raceStartTime = startTime; _previousSectorTime = _raceStartTime; }
         public void StartLapTimer(float startTime) => _currentLapStartTime = startTime;
         public void StopRaceTimer(float endTime) => _raceEndTime = endTime;
         public void InvalidateLap() => _currentLapInvalid = true;
@@ -54,6 +96,31 @@ namespace Common.DataModels
             }
 
             InfractionsByLap[CurrentLap].Add(infraction);
+        }
+
+        public void AddSectorTime(int sector, float time)
+        {
+            if(!SectorTimesBylap.ContainsKey(CurrentLap))
+            {
+                SectorTimesBylap.Add(CurrentLap, new Dictionary<int, float>());
+            }
+
+            if(sector != 1 && SectorTimesBylap[CurrentLap].Count == 0)
+            {
+                // Crossing a sector limit before it's supposed to be crossed, such as finish line
+                return;
+            }
+
+            if(SectorTimesBylap[CurrentLap].ContainsKey(sector))
+            {
+                return;
+            }
+
+            float sectorTime = time - _previousSectorTime;
+            SectorTimesBylap[CurrentLap].Add(sector, sectorTime);
+            _previousSectorTime = time;
+
+            UnityEngine.Debug.Log($"Sector #{sector}: {sectorTime}");
         }
 
         public bool TryCompleteLap(int checkpointAmount, float lapEndTime, out int lapCount)

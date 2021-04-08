@@ -10,11 +10,14 @@ namespace Common.Components.TrackParts
         public event CheckpointEvent CheckpointReport;
 
         [SerializeField]
+        private bool _sectorCheckpoint;
+        [SerializeField]
         private CheckpointOnTrack _trackSensor;
         [SerializeField]
         private CheckpointOffTrack[] _offTrackSensors;
 
         public int CheckpointIndex { get; private set; }
+        public bool IsSectorCheckpoint => _sectorCheckpoint;
         public bool IsFinishLine { get; private set; }
 
         public void OnValidate()

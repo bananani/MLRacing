@@ -17,6 +17,7 @@ namespace Common.Managers
 
         private readonly Dictionary<int, TrackVariant> _trackVariantLookup = new Dictionary<int, TrackVariant>();
         private readonly Dictionary<int, Checkpoint> _checkpointLookup = new Dictionary<int, Checkpoint>();
+        private readonly Dictionary<int, int> _sectorLookup = new Dictionary<int, int>();
 
         public int SelectedTrackVariant => _selectedTrackVariant;
         public int CurrentTrackVariantId { get; private set; } = -1;
@@ -75,6 +76,10 @@ namespace Common.Managers
             {
                 variant.Checkpoints[i].Init(i, i == variant.Checkpoints.Length - 1);
                 _checkpointLookup.Add(i, variant.Checkpoints[i]);
+                if(variant.Checkpoints[i].IsSectorCheckpoint || variant.Checkpoints[i].IsFinishLine)
+                {
+                    _sectorLookup.Add(variant.Checkpoints[i].CheckpointIndex, _sectorLookup.Count + 1);
+                }
             }
 
             CurrentTrackVariantId = variantId;
@@ -92,6 +97,16 @@ namespace Common.Managers
             if(_checkpointLookup.TryGetValue(0, out nextCheckpoint))
             {
                 // Next lap started
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryGetSectorIndex(Checkpoint checkpoint, out int index)
+        {
+            if(_sectorLookup.TryGetValue(checkpoint.CheckpointIndex, out index))
+            {
                 return true;
             }
 

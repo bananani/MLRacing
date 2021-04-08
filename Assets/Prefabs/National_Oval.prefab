@@ -330,6 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8127604098193995168}
   _offTrackSensors:
   - {fileID: 7219121281645209668}
@@ -521,6 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 7128399955869497513}
   _offTrackSensors:
   - {fileID: 2297202398411673378}
@@ -641,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 5174819114020255937}
   _offTrackSensors:
   - {fileID: 7922786145609815826}
@@ -832,6 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 539616371147318855}
   _offTrackSensors:
   - {fileID: 2832949218066270927}
@@ -7246,6 +7250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 1
   _trackSensor: {fileID: 3328008893262962385}
   _offTrackSensors:
   - {fileID: 9157871175130236164}
@@ -7507,6 +7512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 1
   _trackSensor: {fileID: 6997617497543044449}
   _offTrackSensors:
   - {fileID: 8055680760142697231}
@@ -7660,6 +7666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 3025650610038054665}
   _offTrackSensors:
   - {fileID: 2482595391741587489}
@@ -8172,6 +8179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8905449516523813872}
   _offTrackSensors:
   - {fileID: 5498948343919621667}
@@ -8645,6 +8653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 858158938370204419}
   _offTrackSensors:
   - {fileID: 4301232069254203222}
@@ -8765,6 +8774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8300523701390949559}
   _offTrackSensors:
   - {fileID: 3817419756155306634}
@@ -9027,6 +9037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 287050572709518738}
   _offTrackSensors:
   - {fileID: 1750656289386464445}
@@ -9077,6 +9088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8772407683421267718}
   _offTrackSensors:
   - {fileID: 7058777872438376187}
@@ -9127,6 +9139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8121422111291518254}
   _offTrackSensors:
   - {fileID: 8770378053151579163}
@@ -9704,6 +9717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 1552354312699996591}
   _offTrackSensors:
   - {fileID: 8352664597996228049}
@@ -10036,6 +10050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 4876190888641728568}
   _offTrackSensors:
   - {fileID: 718114808815032079}
@@ -10512,6 +10527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 9138600773576491022}
   _offTrackSensors:
   - {fileID: 8255927814412144194}
@@ -10562,6 +10578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 5780740153017759901}
   _offTrackSensors:
   - {fileID: 4167727412157775760}
@@ -10965,6 +10982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 7383705905655857162}
   _offTrackSensors:
   - {fileID: 7938856426094595567}
@@ -11225,6 +11243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8724489936928120519}
   _offTrackSensors:
   - {fileID: 1367026405220045000}
@@ -12729,6 +12748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 549481228631262643}
   _offTrackSensors:
   - {fileID: 4341499594298945434}
@@ -12921,6 +12941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 3611646272567911553}
   _offTrackSensors:
   - {fileID: 8252805598294895404}
@@ -13182,6 +13203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 4977618230537997358}
   _offTrackSensors:
   - {fileID: 5699202023161104434}
@@ -13232,6 +13254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 3187420722936001292}
   _offTrackSensors:
   - {fileID: 3024433802309523479}
@@ -13353,6 +13376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 1
   _trackSensor: {fileID: 4471709025893190909}
   _offTrackSensors:
   - {fileID: 6529857664368838272}
@@ -13403,6 +13427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 8315142181196637260}
   _offTrackSensors:
   - {fileID: 1530960373564972241}
@@ -14088,6 +14113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 4273114257330914642}
   _offTrackSensors:
   - {fileID: 2165642099980682072}
@@ -14380,6 +14406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 1870358295663967259}
   _offTrackSensors:
   - {fileID: 5177001332186526286}
@@ -14430,6 +14457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821c5ecaa707bb2418cf399e1192fea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sectorCheckpoint: 0
   _trackSensor: {fileID: 3206881651881333150}
   _offTrackSensors:
   - {fileID: 3730685476518074474}

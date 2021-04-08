@@ -106,16 +106,22 @@ namespace Common.Managers
                 return;
             }
 
+            float currentTime = transponder.CurrentTime;
+
             InfractionData infractionData =
                 new InfractionData(
                     checkpoint.CheckpointIndex + 1,
-                    transponder.CurrentTime - _raceStartTime,
+                    currentTime - _raceStartTime,
                     transponder.GetCarSpeed(),
                     transponder.GetCarAcceleration(),
                     infractionSeverity
                 );
 
             lapData.CheckpointPassed(checkpoint.CheckpointIndex, infractionData);
+            if((checkpoint.IsSectorCheckpoint || checkpoint.IsFinishLine) && _currentTrack.TryGetSectorIndex(checkpoint, out int sector))
+            {
+                lapData.AddSectorTime(sector, currentTime);
+            }
 
             if(!checkpoint.IsFinishLine || !lapData.TryCompleteLap(_currentTrack.CheckpointCount, Time.time, out int completedLaps) || !_entrantLookup.TryGetValue(transponder.TransponderId, out RaceEntrant entrant))
             {
@@ -180,7 +186,7 @@ namespace Common.Managers
             StringBuilder standingsString = new StringBuilder();
             for(int i = 0; i < _finishedDrivers.Count; i++)
             {
-                standingsString.AppendLine($"{i + 1} : {_finishedDrivers[i].entrant.Driver.Name} (Fastest lap: {_finishedDrivers[i].lapData.FastestLap})");
+                standingsString.AppendLine($"{i + 1} : {_finishedDrivers[i].entrant.Driver.Name} (Fastest lap: {_finishedDrivers[i].lapData.FastestLap}, Fastest theoretical lap: {_finishedDrivers[i].lapData.TheoreticalFastestLap})");
             }
 
             Debug.Log($"Race is over!\n{standingsString}");

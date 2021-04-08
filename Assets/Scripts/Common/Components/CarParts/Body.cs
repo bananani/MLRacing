@@ -63,7 +63,7 @@ namespace Common.Components.CarParts
 
         public void OnCollisionEnter2D(Collision2D collider)
         {
-            UnityEngine.Debug.Log("Look where you're going, nutter!");
+            //UnityEngine.Debug.Log("Look where you're going, nutter!");
         }
     }
 }

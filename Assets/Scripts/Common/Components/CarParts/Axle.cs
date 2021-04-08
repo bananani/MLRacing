@@ -20,6 +20,7 @@ namespace Common.Components.CarParts
         private bool _useForSteering => (_carData.SteeringType & _steeringType) == _steeringType;
         private bool _isRearAxle => (_steeringType & SteeringTypeIdentifier.REAR) == SteeringTypeIdentifier.REAR;
 
+        public bool IsOnAllowedSurface => _leftTyre.IsOnAllowedSurface || _rightTyre.IsOnAllowedSurface;
         public float CurrentDownforce { get; private set; }
 
         public void Init(CarData carData, SteeringTypeIdentifier steeringType)

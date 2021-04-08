@@ -56,6 +56,7 @@ namespace Common.Components.CarParts
         private Vector2 _previousFrameVelocity;
 
         private float _currentDriftAngle => Mathf.Min(Vector2.Angle(Vector2.up, RelativeVelocity), Vector2.Angle(Vector2.up, -RelativeVelocity));
+        public bool IsOnAllowedSurface => _frontAxle.IsOnAllowedSurface || _rearAxle.IsOnAllowedSurface;
 
         public void Awake()
         {

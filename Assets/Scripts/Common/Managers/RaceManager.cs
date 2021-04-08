@@ -69,6 +69,7 @@ namespace Common.Managers
                 _transponderLookup[transponderId] = transponder;
                 _entrantLookup[transponderId] = entrant;
                 _lapDataLookup[transponderId] = new LapData();
+                transponder.LapInvalidated += OnLapInvalidated;
 
                 _activeTransponders.Add(transponder);
             }
@@ -85,6 +86,16 @@ namespace Common.Managers
 
             Debug.Log($"Race started! Entrant count: {_raceGrid.Count}");
             RaceStarted?.Invoke();
+        }
+
+        private void OnLapInvalidated(Transponder transponder)
+        {
+            if(!_lapDataLookup.TryGetValue(transponder.TransponderId, out LapData lapData))
+            {
+                return;
+            }
+
+            lapData.InvalidateLap();
         }
 
         private void OnCheckpointReport(Checkpoint checkpoint, Transponder transponder, InfractionSeverityIdentifier infractionSeverity)

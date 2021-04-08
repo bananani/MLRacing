@@ -9,8 +9,9 @@ namespace Common.Components
     [RequireComponent(typeof(Collider2D))]
     public class Transponder : MonoBehaviour
     {
-        public delegate void TransponderEvent();
+        public delegate void TransponderEvent(Transponder transponder);
         public event TransponderEvent CheckpointReached;
+        public event TransponderEvent LapInvalidated;
 
         [SerializeField]
         private Collider2D _collider;
@@ -29,6 +30,14 @@ namespace Common.Components
             if(_collider == null)
             {
                 _collider = GetComponent<Collider2D>();
+            }
+        }
+
+        public void Update()
+        {
+            if(!_car.IsOnAllowedSurface)
+            {
+                LapInvalidated?.Invoke(this);
             }
         }
 

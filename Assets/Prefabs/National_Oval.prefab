@@ -3122,6 +3122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SurfaceName: Grass
+  AllowedSurface: 0
   SidewaysGripCoefficient: 0.5
   ForwardsGripCoefficient: 0.5
   SurfaceMovementResistanceCoefficient: 0
@@ -5983,6 +5984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SurfaceName: Road
+  AllowedSurface: 1
   SidewaysGripCoefficient: 1
   ForwardsGripCoefficient: 1
   SurfaceMovementResistanceCoefficient: 0
@@ -6094,6 +6096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SurfaceName: Sand
+  AllowedSurface: 0
   SidewaysGripCoefficient: 0.2
   ForwardsGripCoefficient: 0.2
   SurfaceMovementResistanceCoefficient: 2.2

@@ -13,19 +13,21 @@ namespace Common.DataModels
         public readonly Dictionary<int, List<InfractionData>> InfractionsByLap = new Dictionary<int, List<InfractionData>>();
         public int TotalInfractions => InfractionsByLap.Sum(kvp => kvp.Value.Count);
 
-        private float raceStartTime;
-        private float raceEndTime;
-        private float currentLapStartTime;
+        private float _raceStartTime;
+        private float _raceEndTime;
+        private float _currentLapStartTime;
+        private bool _currentLapInvalid;
 
         public readonly Dictionary<int, (float time, bool valid)> LapTimes = new Dictionary<int, (float, bool)>();
 
-        public int ValidLapCount => LapTimes.Count(kvp => kvp.Value.valid);
+
         public float FastestLap => LapTimes.Values.Min(l => l.valid ? l.time : float.MaxValue);
 
-        public void StartRaceTimer(float startTime) => raceStartTime = startTime;
-        public void StartLapTimer(float startTime) => currentLapStartTime = startTime;
-        public void StopRaceTimer(float endTime) => raceEndTime = endTime;
-        public float TotalRaceTime => raceEndTime - raceStartTime;
+        public void StartRaceTimer(float startTime) => _raceStartTime = startTime;
+        public void StartLapTimer(float startTime) => _currentLapStartTime = startTime;
+        public void StopRaceTimer(float endTime) => _raceEndTime = endTime;
+        public void InvalidateLap() => _currentLapInvalid = true;
+        public float TotalRaceTime => _raceEndTime - _raceStartTime;
 
         public (float time, bool valid)? GetPreviousLapTime()
         {
@@ -60,16 +62,17 @@ namespace Common.DataModels
 
             if(!lapComplete)
             {
-                lapCount = ValidLapCount;
+                lapCount = CurrentLap;
                 return false;
             }
 
-            LapTimes.Add(CurrentLap, (lapEndTime - currentLapStartTime, lapIsValid));
+            LapTimes.Add(CurrentLap, (lapEndTime - _currentLapStartTime, lapIsValid));
             CurrentLap++;
             StartLapTimer(lapEndTime);
             PassedCheckpoints.Clear();
+            _currentLapInvalid = false;
 
-            lapCount = ValidLapCount;
+            lapCount = CurrentLap;
             return lapComplete;
         }
 
@@ -85,12 +88,16 @@ namespace Common.DataModels
                 passedCheckpoints.Add(index);
             }
 
+            // If all checkpoints have been passed, we've completed the lap (mostly) on road. Hoorray
             if(sumOfCheckpointIds == passedCheckpoints.Sum())
             {
                 lapComplete = true;
-                return true;
+
+                // Lap has been manually invalidated because car got completely off trtack at some point
+                return !_currentLapInvalid;
             }
 
+            // If lap is not complete on road and we don't have any infractions on the lap, we've taken a shortcut
             if(!InfractionsByLap.ContainsKey(CurrentLap))
             {
                 return false;

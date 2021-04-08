@@ -90,6 +90,8 @@ namespace Common.Components.CarParts
 
         private Ray _gripRay => new Ray(transform.position, Vector3.forward * 1000f);
 
+        public bool IsOnAllowedSurface => _currentSurface?.AllowedSurface ?? false;
+
         public void Init(CarData carData, TyrePositionIdentifier tyrePosition)
         {
             _trailRenderer = GetComponent<TrailRenderer>();

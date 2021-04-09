@@ -8,13 +8,15 @@ namespace Common.DataModels
     public struct TrackVariant
     {
         public int Id;
+        public string Name;
         public Transform[] ObstacleGroups;
         public Transform[] StartingGrid;
         public Checkpoint[] Checkpoints;
 
-        public TrackVariant(int id, Transform[] obstacleGroups, Transform[] startingGrid, Checkpoint[] checkpoints)
+        public TrackVariant(int id, string name, Transform[] obstacleGroups, Transform[] startingGrid, Checkpoint[] checkpoints)
         {
             Id = id;
+            Name = name;
             ObstacleGroups = obstacleGroups;
             StartingGrid = startingGrid;
             Checkpoints = checkpoints;

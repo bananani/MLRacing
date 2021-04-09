@@ -22,4 +22,4 @@ MonoBehaviour:
   ToeRear: 0
   FrontTyres: {fileID: 11400000, guid: 9f0734a9793b43945bae80ac6ea8a21f, type: 2}
   RearTyres: {fileID: 11400000, guid: 9f0734a9793b43945bae80ac6ea8a21f, type: 2}
-  BodyKit: {fileID: 11400000, guid: 2abde55083815004e828ec609968f371, type: 2}
+  BodyKit: {fileID: 11400000, guid: 99c548d7b3b2ae240a93efefcd4055df, type: 2}

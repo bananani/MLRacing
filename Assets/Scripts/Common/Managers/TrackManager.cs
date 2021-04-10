@@ -27,6 +27,11 @@ namespace Common.Managers
 
         public void OnValidate()
         {
+            ValidateTrackVariant();
+        }
+
+        private void ValidateTrackVariant()
+        {
             if(_trackVariants.Length == 0)
             {
                 return;

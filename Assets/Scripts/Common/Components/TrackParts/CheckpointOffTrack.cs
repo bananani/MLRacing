@@ -6,6 +6,8 @@ namespace Common.Components.TrackParts
 {
     public class CheckpointOffTrack : MonoBehaviour, ICheckpointSensor
     {
+        private static readonly Color _orange = new Color(1f, 0.5f, 0f);
+        
         [SerializeField]
         private InfractionSeverityIdentifier _infractionSeverity;
 
@@ -19,10 +21,11 @@ namespace Common.Components.TrackParts
         {
             Gizmos.color = _infractionSeverity switch
             {
-                InfractionSeverityIdentifier.OnTrack => Color.green,
-                InfractionSeverityIdentifier.Minor => Color.yellow,
-                InfractionSeverityIdentifier.Moderate => new Color(1f, 0.5f, 0f),
-                InfractionSeverityIdentifier.Severe => Color.red
+                InfractionSeverityIdentifier.OnTrack => Color.black,
+                InfractionSeverityIdentifier.OffTrack => Color.green,
+                InfractionSeverityIdentifier.InCornerEnd => Color.yellow,
+                InfractionSeverityIdentifier.InCorner => _orange,
+                InfractionSeverityIdentifier.InCornerApex => Color.red
             };
 
             BoxCollider2D collider = GetComponent<BoxCollider2D>();

@@ -3,8 +3,9 @@ namespace Common.Identifiers
     public enum InfractionSeverityIdentifier
     {
         OnTrack = 0,
-        Minor = 1,
-        Moderate = 2,
-        Severe = 3,
+        OffTrack = 1,
+        InCornerEnd = 2,
+        InCorner = 3,
+        InCornerApex = 4,
     }
 }

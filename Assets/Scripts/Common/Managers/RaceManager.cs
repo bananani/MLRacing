@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Common.Components;
 using Common.Components.TrackParts;
+using Common.Constants;
 using Common.DataModels;
 using Common.Identifiers;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace Common.Managers
         private readonly Dictionary<Guid, Transponder> _transponderLookup = new Dictionary<Guid, Transponder>();
         private readonly Dictionary<Guid, RaceEntrant> _entrantLookup = new Dictionary<Guid, RaceEntrant>();
         private readonly Dictionary<Guid, LapData> _lapDataLookup = new Dictionary<Guid, LapData>();
+
+        private readonly Dictionary<Guid, List<InfractionData>> _driversUnderInvestigation = new Dictionary<Guid, List<InfractionData>>();
 
         private readonly HashSet<Transponder> _activeTransponders = new HashSet<Transponder>();
         private readonly List<(RaceEntrant entrant, LapData lapData)> _finishedDrivers = new List<(RaceEntrant, LapData)>();
@@ -88,6 +91,155 @@ namespace Common.Managers
             RaceStarted?.Invoke();
         }
 
+        private void EvaluatePenalties(Guid driverId, InfractionData violationData)
+        {
+            if(!_lapDataLookup.TryGetValue(driverId, out LapData lapData))
+            {
+                return;
+            }
+
+            // Evaluate existing or add new violations
+            if(!_driversUnderInvestigation.ContainsKey(driverId))
+            {
+                // New violation
+                if(violationData.Severity == InfractionSeverityIdentifier.InCornerApex)
+                {
+                    if(lapData.PassedCheckpoints.Contains(violationData.CheckpointIndex))
+                    {
+                        // The driver has been on the track at this point, should be fine...
+                        return;
+                    }
+
+                    // We need more info to determine if the current trajectory of the car is punishable
+                    _driversUnderInvestigation.Add(driverId, new List<InfractionData>() { violationData });
+                }
+            }
+            else
+            {
+                // New information received for the driver track limit violation
+                switch(violationData.Severity)
+                {
+                    case InfractionSeverityIdentifier.OnTrack:
+                        // Car has returned to the track (even if it is just for a while), so try to resolve all pending violations
+                        List<int> resolvedViolations = new List<int>();
+
+                        // Resolve violations, where player has been partially on track 
+                        for(int i = 0; i < _driversUnderInvestigation[driverId].Count; i++)
+                        {
+                            InfractionData incident = _driversUnderInvestigation[driverId][i];
+                            if(lapData.PassedCheckpoints.Contains(incident.CheckpointIndex))
+                            {
+                                // False alarm, the guy's been drifting close enough to the track
+                                resolvedViolations.Add(i);
+                                continue;
+                            }
+                        }
+
+                        for(int i = resolvedViolations.Count - 1; i >= 0; i--)
+                        {
+                            _driversUnderInvestigation[driverId].RemoveAt(resolvedViolations[i]);
+                        }
+
+                        // Check if player has unresolved violations
+                        if(_driversUnderInvestigation[driverId].Count > 0)
+                        {
+                            InfractionSeverityIdentifier highestSeverity = InfractionSeverityIdentifier.OnTrack;
+
+                            float timeOfFirstViolation = float.MaxValue;
+                            float distanceCoveredDuringViolation = 0f;
+                            float minSpeed = float.MaxValue;
+                            float maxSpeed = float.MinValue;
+                            InfractionData? previousViolation = null;
+
+                            foreach(InfractionData violation in _driversUnderInvestigation[driverId])
+                            {
+                                if(violation.Severity > highestSeverity)
+                                {
+                                    highestSeverity = violation.Severity;
+                                }
+
+                                if(violation.TimeOfInfraction < timeOfFirstViolation)
+                                {
+                                    timeOfFirstViolation = violation.TimeOfInfraction;
+                                }
+
+                                if(previousViolation.HasValue)
+                                {
+                                    CalculateViolationData(previousViolation.Value, violation, ref distanceCoveredDuringViolation, ref minSpeed, ref maxSpeed);
+                                }
+
+                                previousViolation = violation;
+                            }
+
+                            CalculateViolationData(previousViolation.Value, violationData, ref distanceCoveredDuringViolation, ref minSpeed, ref maxSpeed);
+
+                            float totalViolationDuration = violationData.TimeOfInfraction - timeOfFirstViolation;
+
+                            // Average velocity in meters per second
+                            float averageSpeedDuringViolation = distanceCoveredDuringViolation / totalViolationDuration;
+
+                            if(highestSeverity > InfractionSeverityIdentifier.OffTrack)
+                            {
+                                StringBuilder sb = new StringBuilder();
+                                sb.AppendLine("Driver will receive a penalty for an off-track violation during a race");
+                                sb.AppendLine($"Amount of individual track limit infractions: {_driversUnderInvestigation[driverId].Count}");
+                                sb.AppendLine($"Highest severity: {highestSeverity}");
+                                sb.AppendLine($"Duration: {totalViolationDuration:0.00} s");
+                                sb.AppendLine($"Distance covered: {distanceCoveredDuringViolation:0.00} m");
+                                sb.AppendLine($"Average speed: {averageSpeedDuringViolation:0.00} m/s ({averageSpeedDuringViolation * CVelocity.MS_TO_KMH_CONVERSION:0.00} kmh)");
+                                sb.AppendLine($"Min speed: {minSpeed:0.00} m/s ({minSpeed * CVelocity.MS_TO_KMH_CONVERSION:0.00} kmh)");
+                                sb.AppendLine($"Max speed: {maxSpeed:0.00} m/s ({maxSpeed * CVelocity.MS_TO_KMH_CONVERSION:0.00} kmh)");
+                                Debug.LogError(sb);
+                            }
+
+                            _driversUnderInvestigation[driverId].Clear();
+                        }
+
+                        return;
+
+                    default:
+                        if(lapData.PassedCheckpoints.Contains(violationData.CheckpointIndex))
+                        {
+                            // The driver has been on the track at this point, should be fine...
+                            return;
+                        }
+
+                        // Add new information about the current violation
+                        _driversUnderInvestigation[driverId].Add(violationData);
+                        break;
+                }
+            }
+        }
+
+        private void CalculateViolationData(InfractionData previousViolation, InfractionData violation, ref float distanceCoveredDuringViolation, ref float minSpeed, ref float maxSpeed)
+        {
+            float coveredDistance = Vector2.Distance(previousViolation.CarPosition, violation.CarPosition);
+            float duration = violation.TimeOfInfraction - previousViolation.TimeOfInfraction;
+
+            distanceCoveredDuringViolation += coveredDistance;
+            float speed = coveredDistance / duration;
+
+            if(violation.Speed < minSpeed)
+            {
+                minSpeed = violation.Speed;
+            }
+
+            if(violation.Speed > maxSpeed)
+            {
+                minSpeed = violation.Speed;
+            }
+
+            if(speed < minSpeed)
+            {
+                minSpeed = speed;
+            }
+
+            if(speed > maxSpeed)
+            {
+                maxSpeed = speed;
+            }
+        }
+
         private void OnLapInvalidated(Transponder transponder)
         {
             if(!_lapDataLookup.TryGetValue(transponder.TransponderId, out LapData lapData))
@@ -112,6 +264,7 @@ namespace Common.Managers
                 new InfractionData(
                     checkpoint.CheckpointIndex + 1,
                     currentTime - _raceStartTime,
+                    transponder.transform.position,
                     transponder.GetCarSpeed(),
                     transponder.GetCarAcceleration(),
                     infractionSeverity
@@ -121,6 +274,11 @@ namespace Common.Managers
             if((checkpoint.IsSectorCheckpoint || checkpoint.IsFinishLine) && _currentTrack.TryGetSectorIndex(checkpoint, out int sector))
             {
                 lapData.AddSectorTime(sector, currentTime);
+            }
+
+            if(infractionSeverity != InfractionSeverityIdentifier.OnTrack || _driversUnderInvestigation.ContainsKey(transponder.TransponderId))
+            {
+                EvaluatePenalties(transponder.TransponderId, infractionData);
             }
 
             if(!checkpoint.IsFinishLine || !lapData.TryCompleteLap(_currentTrack.CheckpointCount, Time.time, out int completedLaps) || !_entrantLookup.TryGetValue(transponder.TransponderId, out RaceEntrant entrant))

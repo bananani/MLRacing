@@ -5872,6 +5872,7 @@ MonoBehaviour:
   _selectedTrackVariant: 1
   _trackVariants:
   - Id: 0
+    Name: Oval
     ObstacleGroups:
     - {fileID: 3773026424679576220}
     StartingGrid:
@@ -5902,6 +5903,7 @@ MonoBehaviour:
     - {fileID: 5360048612243728568}
     - {fileID: 7986235448927403110}
   - Id: 1
+    Name: SnakeRun
     ObstacleGroups:
     - {fileID: 1634594484247435950}
     StartingGrid:
